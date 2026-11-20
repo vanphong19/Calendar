@@ -91,7 +91,7 @@ fun HolidaysScreen(viewModel: HolidaysViewModel, onOpenHoliday: (ruleId: String,
                 Text(
                     LichFormat.monthName(month).uppercase(),
                     style = LichTextStyles.Band,
-                    color = MaterialTheme.lich.binding,
+                    color = MaterialTheme.lich.accent,
                     modifier = Modifier.padding(start = 20.dp, top = 20.dp, bottom = 4.dp).semantics { heading() },
                 )
             }

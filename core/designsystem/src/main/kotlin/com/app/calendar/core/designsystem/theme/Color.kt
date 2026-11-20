@@ -79,6 +79,8 @@ data class LichColors(
     val paperShade: Color,
     /** Glued binding strip at the top of the block. */
     val binding: Color,
+    /** Accent for headings printed on paper (month band, section titles); readable in both themes. */
+    val accent: Color,
     /** Weekday numerals. */
     val ink: Color,
     val inkMuted: Color,
@@ -100,6 +102,7 @@ internal val LightLichColors = LichColors(
     paper = Color(0xFFFFFCF6),
     paperShade = Color(0xFFEDE3D3),
     binding = Color(0xFFB3362B),
+    accent = Color(0xFFB3362B),
     ink = Color(0xFF1D1A17),
     inkMuted = Color(0xFF6B6157),
     sunday = Color(0xFFC0322A),
@@ -121,6 +124,7 @@ internal val DarkLichColors = LichColors(
     paper = Color(0xFF221E19),
     paperShade = Color(0xFF2E2923),
     binding = Color(0xFF8F1F17),
+    accent = Color(0xFFFF9C8F),
     ink = Color(0xFFEDE4D9),
     inkMuted = Color(0xFFB3A797),
     sunday = Color(0xFFFF8A7C),

@@ -270,7 +270,7 @@ private fun Section(title: String) {
         Text(
             title,
             style = MaterialTheme.typography.labelLarge,
-            color = MaterialTheme.lich.binding,
+            color = MaterialTheme.lich.accent,
             modifier = Modifier.padding(start = 20.dp, top = 16.dp, bottom = 4.dp).semantics { heading() },
         )
     }

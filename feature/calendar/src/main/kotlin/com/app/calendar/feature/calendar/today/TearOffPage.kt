@@ -132,10 +132,10 @@ private fun PageHeader(details: DayDetails) {
         Text(
             LichFormat.monthName(details.date.monthValue).uppercase(),
             style = LichTextStyles.Band,
-            color = colors.binding,
+            color = colors.accent,
             modifier = Modifier.weight(1f),
         )
-        Text(details.date.year.toString(), style = LichTextStyles.Band, color = colors.binding)
+        Text(details.date.year.toString(), style = LichTextStyles.Band, color = colors.accent)
     }
 }
 

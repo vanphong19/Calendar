@@ -163,7 +163,7 @@ private fun SectionTitle(text: String, modifier: Modifier = Modifier.padding(hor
     Text(
         text,
         style = MaterialTheme.typography.labelLarge,
-        color = MaterialTheme.lich.binding,
+        color = MaterialTheme.lich.accent,
         modifier = modifier.padding(top = 16.dp, bottom = 4.dp).semantics { heading() },
     )
 }

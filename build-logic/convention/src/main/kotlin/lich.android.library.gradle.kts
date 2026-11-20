@@ -26,5 +26,6 @@ dependencies {
     "testImplementation"(versionCatalog.lib("truth"))
     "androidTestImplementation"(versionCatalog.lib("androidx-test-runner"))
     "androidTestImplementation"(versionCatalog.lib("androidx-test-ext-junit"))
+    "androidTestImplementation"(versionCatalog.lib("androidx-espresso-core"))
     "androidTestImplementation"(versionCatalog.lib("truth"))
 }
