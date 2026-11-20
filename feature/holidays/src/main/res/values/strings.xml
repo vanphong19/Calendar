@@ -3,8 +3,17 @@
     <string name="holidays_title">Ngày lễ %1$d</string>
     <string name="holidays_previous_year">Năm trước</string>
     <string name="holidays_next_year">Năm sau</string>
+    <string name="holidays_back_to_current_year">Về năm %1$d</string>
     <string name="holidays_days_off">Lịch nghỉ chính thức</string>
-    <string name="holidays_days_off_missing">Lịch nghỉ bù năm %1$d chưa được công bố. Ứng dụng chỉ hiển thị khi có thông báo chính thức.</string>
+    <string name="holidays_days_off_summary">%1$d đợt · %2$d ngày</string>
+    <string name="holidays_days_off_statutory_summary">%1$d dịp luật định</string>
+    <string name="holidays_days_off_missing">Lịch nghỉ bù, hoán đổi năm %1$d chưa được công bố. Dưới đây là các dịp nghỉ lễ theo Bộ luật Lao động.</string>
+    <string name="holidays_break_status_past">Đã qua</string>
+    <string name="holidays_break_status_ongoing">Đang nghỉ</string>
+    <string name="holidays_break_status_upcoming">Sắp tới</string>
+    <string name="holidays_make_up_workday_line">Đi làm bù: %1$s</string>
+    <string name="holidays_list_section">Danh sách ngày lễ</string>
+    <string name="holidays_list_count">%1$d ngày</string>
     <string name="holidays_source">Nguồn: %1$s</string>
     <string name="holidays_empty">Không có ngày lễ nào trong nhóm đã chọn.</string>
     <string name="holidays_range">%1$s – %2$s</string>
@@ -17,8 +26,12 @@
     <string name="holidays_days_count">%1$d ngày</string>
     <string name="holidays_countdown_band">Đếm ngược</string>
     <string name="holidays_countdown_days_label">ngày nữa là đến</string>
+    <string name="holidays_countdown_days_short">ngày nữa</string>
     <string name="holidays_countdown_today">Hôm nay là</string>
     <string name="holidays_countdown_choose">Chọn ngày lễ để đếm ngược</string>
     <string name="holidays_countdown_cd">Còn %1$d ngày nữa là đến %2$s</string>
     <string name="holidays_chip_date">%1$s · %2$s</string>
+    <string name="holidays_open_detail">Xem chi tiết</string>
+    <string name="holidays_date_info_title">Thời gian &amp; quy luật</string>
+    <string name="holidays_about_title">Ý nghĩa ngày lễ</string>
 </resources>

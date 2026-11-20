@@ -49,8 +49,10 @@
     </string-array>
 
     <string name="month_year">Tháng %1$d, %2$d</string>
+    <string name="month_number">Tháng %1$d</string>
     <string name="month_year_short">%1$02d/%2$d</string>
     <string name="solar_date">%1$02d/%2$02d/%3$d</string>
+    <string name="solar_day_month">%1$02d/%2$02d</string>
     <string name="lunar_month">Tháng %1$s</string>
     <string name="lunar_month_leap">Tháng %1$s nhuận</string>
     <string name="lunar_month_full">Đủ</string>
@@ -100,6 +102,7 @@
 
     <string name="all_day">Cả ngày</string>
     <string name="time_range">%1$s – %2$s</string>
+    <string name="time_range_next_days">%1$s – %2$s (+%3$d ngày)</string>
 
     <string name="holiday_category_public">Nghỉ lễ chính thức</string>
     <string name="holiday_category_traditional">Lễ truyền thống</string>

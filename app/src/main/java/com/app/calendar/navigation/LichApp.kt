@@ -7,12 +7,21 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.adaptive.currentWindowAdaptiveInfo
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults
 import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffold
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults
+import androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
 import androidx.navigation3.runtime.NavBackStack
@@ -92,35 +101,45 @@ fun LichApp(
     val addEvent: (LocalDate) -> Unit = { backStack.add(EventEditorRoute(date = it.toString())) }
     val openHoliday: (Holiday) -> Unit = { backStack.add(HolidayDetailRoute(it.ruleId, it.date.year)) }
 
-    val itemColors = androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults.itemColors(
-        navigationBarItemColors = androidx.compose.material3.NavigationBarItemDefaults.colors(
-            indicatorColor = androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer,
-            selectedIconColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
-            selectedTextColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+    val config = LocalConfiguration.current
+    val useRail = config.screenWidthDp >= 600
+    val compactRail = useRail && config.screenHeightDp < 420
+
+    val itemColors = NavigationSuiteDefaults.itemColors(
+        navigationBarItemColors = NavigationBarItemDefaults.colors(
+            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+            selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            selectedTextColor = MaterialTheme.colorScheme.primary,
+        ),
+        navigationRailItemColors = NavigationRailItemDefaults.colors(
+            indicatorColor = MaterialTheme.colorScheme.primaryContainer,
+            selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            selectedTextColor = MaterialTheme.colorScheme.primary,
         ),
     )
+    val tabLabels = TopLevel.entries.associateWith { stringResource(it.label) }
     NavigationSuiteScaffold(
-        navigationSuiteColors = androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults.colors(
-            navigationBarContainerColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceContainerLow,
-            navigationRailContainerColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceContainerLow,
+        navigationSuiteColors = NavigationSuiteDefaults.colors(
+            navigationBarContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+            navigationRailContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         ),
         navigationSuiteItems = {
             TopLevel.entries.forEach { tab ->
+                val labelText = tabLabels.getValue(tab)
                 item(
                     selected = tab == selectedTab,
                     onClick = { backStack.switchTo(tab.route) },
-                    icon = { Icon(tab.icon, contentDescription = null) },
-                    label = { Text(stringResource(tab.label), maxLines = 1) },
+                    icon = { Icon(tab.icon, contentDescription = if (compactRail) labelText else null) },
+                    label = { Text(labelText, maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) },
+                    alwaysShowLabel = !compactRail,
                     colors = itemColors,
                 )
             }
         },
-        layoutType = if (showNavigation) {
-            androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(
-                androidx.compose.material3.adaptive.currentWindowAdaptiveInfo(),
-            )
-        } else {
-            androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteType.None
+        layoutType = when {
+            !showNavigation -> NavigationSuiteType.None
+            useRail -> NavigationSuiteType.NavigationRail
+            else -> NavigationSuiteScaffoldDefaults.calculateFromAdaptiveInfo(currentWindowAdaptiveInfo())
         },
     ) {
         NavDisplay(

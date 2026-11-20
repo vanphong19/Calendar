@@ -43,13 +43,15 @@ fun EventRow(occurrence: EventOccurrence, onClick: () -> Unit, modifier: Modifie
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Box(
-            Modifier
-                .width(4.dp)
-                .height(36.dp)
-                .clip(RoundedCornerShape(2.dp))
-                .background(MaterialTheme.lich.event(event.color)),
-        )
+        Box(Modifier.width(12.dp), contentAlignment = Alignment.Center) {
+            Box(
+                Modifier
+                    .width(4.dp)
+                    .height(36.dp)
+                    .clip(RoundedCornerShape(2.dp))
+                    .background(MaterialTheme.lich.event(event.color)),
+            )
+        }
         Column(Modifier.weight(1f)) {
             Text(
                 text = event.title,
@@ -90,7 +92,9 @@ fun HolidayRow(holiday: Holiday, modifier: Modifier = Modifier, onClick: (() -> 
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Box(Modifier.size(10.dp).clip(CircleShape).background(color))
+        Box(Modifier.width(12.dp), contentAlignment = Alignment.Center) {
+            Box(Modifier.size(10.dp).clip(CircleShape).background(color))
+        }
         Column(Modifier.weight(1f)) {
             Text(holiday.name, style = MaterialTheme.typography.titleSmall, color = color)
             Text(

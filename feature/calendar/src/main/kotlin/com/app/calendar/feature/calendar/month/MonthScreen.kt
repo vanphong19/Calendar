@@ -10,19 +10,23 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -39,6 +43,7 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -52,10 +57,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.app.calendar.core.designsystem.component.DailyImageView
@@ -110,85 +118,177 @@ fun MonthScreen(
         }
     }
 
+    val config = LocalConfiguration.current
+    val compactHeight = config.screenHeightDp < 480
+    val twoPaneLandscape = config.screenWidthDp >= 600 && compactHeight
+    val coverHeight = if (config.screenHeightDp < 840) 108.dp else 144.dp
+    val rowHeight = gridRowHeight(settings.showLunar, compactHeight = twoPaneLandscape)
+    val isCurrentMonth = state.visibleMonth == YearMonth.from(today) && state.selectedDate == today
+
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
     ) { padding ->
-        LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(padding),
-            contentPadding = PaddingValues(bottom = 96.dp),
-        ) {
-            item(key = "top") {
-                TopRow(
+        if (twoPaneLandscape) {
+            Column(Modifier.fillMaxSize().padding(padding)) {
+                CompactLandscapeHeader(
                     month = state.visibleMonth,
-                    isCurrentMonth = state.visibleMonth == YearMonth.from(today) && state.selectedDate == today,
+                    isCurrentMonth = isCurrentMonth,
+                    mode = state.mode,
                     onPickMonth = { showMonthPicker = true },
                     onToday = { viewModel.onAction(MonthAction.GoToToday) },
+                    onSelectMode = { viewModel.onAction(MonthAction.SetMode(it)) },
                 )
-            }
-            item(key = "modes") {
-                ModeSelector(state.mode) { viewModel.onAction(MonthAction.SetMode(it)) }
-            }
-            when (state.mode) {
-                CalendarMode.MONTH -> {
-                    item(key = "cover") {
-                        val cover by remember(state.visibleMonth) { viewModel.cover(state.visibleMonth) }.collectAsStateWithLifecycle()
-                        MonthCover(state.visibleMonth, cover, settings)
+                if (state.mode == CalendarMode.AGENDA) {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        contentPadding = PaddingValues(bottom = 32.dp),
+                    ) {
+                        agendaItems(
+                            agenda = viewModel.agenda,
+                            today = today,
+                            onOpenEvent = onOpenEvent,
+                            onOpenHoliday = onOpenHoliday,
+                            onLoadMore = { viewModel.onAction(MonthAction.LoadMoreAgenda) },
+                        )
                     }
-                    item(key = "weekdays") { WeekdayHeader(settings.firstDayOfWeek) }
-                    item(key = "grid") {
-                        HorizontalPager(
-                            state = monthPager,
-                            key = { it },
-                            modifier = Modifier.fillMaxWidth().height(GridRowHeight * 6),
-                        ) { page ->
-                            val month = monthOf(page)
-                            val cells by remember(month) { viewModel.monthCells(month) }.collectAsStateWithLifecycle()
-                            MonthGrid(
-                                cells = cells,
-                                today = today,
-                                selected = state.selectedDate,
-                                showLunar = settings.showLunar,
-                                onSelect = { viewModel.onAction(MonthAction.SelectDate(it)) },
+                } else {
+                    Row(Modifier.fillMaxSize()) {
+                        Column(
+                            Modifier
+                                .weight(0.54f)
+                                .fillMaxHeight()
+                                .verticalScroll(rememberScrollState())
+                                .padding(bottom = 12.dp),
+                        ) {
+                            WeekdayHeader(settings.firstDayOfWeek)
+                            if (state.mode == CalendarMode.MONTH) {
+                                HorizontalPager(
+                                    state = monthPager,
+                                    key = { it },
+                                    modifier = Modifier.fillMaxWidth().height(rowHeight * 6),
+                                ) { page ->
+                                    val month = monthOf(page)
+                                    val cells by remember(month) { viewModel.monthCells(month) }.collectAsStateWithLifecycle()
+                                    MonthGrid(
+                                        cells = cells,
+                                        today = today,
+                                        selected = state.selectedDate,
+                                        showLunar = settings.showLunar,
+                                        compactHeight = true,
+                                        onSelect = { viewModel.onAction(MonthAction.SelectDate(it)) },
+                                    )
+                                }
+                            } else {
+                                WeekStrip(
+                                    viewModel = viewModel,
+                                    selected = state.selectedDate,
+                                    today = today,
+                                    settings = settings,
+                                    compactHeight = true,
+                                    onSelect = { viewModel.onAction(MonthAction.SelectDate(it)) },
+                                )
+                            }
+                        }
+                        VerticalDivider(Modifier.fillMaxHeight().padding(vertical = 8.dp))
+                        LazyColumn(
+                            Modifier.weight(0.46f).fillMaxHeight(),
+                            contentPadding = PaddingValues(top = 4.dp, bottom = 24.dp),
+                        ) {
+                            selectedDayItems(
+                                date = state.selectedDate,
+                                holidays = selectedPage.details.holidays.takeIf { selectedPage.details.date == state.selectedDate }.orEmpty(),
+                                occurrences = selectedPage.details.occurrences.takeIf { selectedPage.details.date == state.selectedDate }.orEmpty(),
+                                lunarLabel = { LichFormat.lunarDateLong(selectedPage.details.lunar, selectedPage.details.yearCanChi.displayName) },
+                                onOpenEvent = onOpenEvent,
+                                onOpenHoliday = onOpenHoliday,
+                                onOpenPage = onOpenPage,
                             )
                         }
                     }
-                    item(key = "divider") { HorizontalDivider(Modifier.padding(vertical = 8.dp, horizontal = 16.dp)) }
-                    selectedDayItems(
-                        date = state.selectedDate,
-                        holidays = selectedPage.details.holidays.takeIf { selectedPage.details.date == state.selectedDate }.orEmpty(),
-                        occurrences = selectedPage.details.occurrences.takeIf { selectedPage.details.date == state.selectedDate }.orEmpty(),
-                        lunarLabel = { LichFormat.lunarDateLong(selectedPage.details.lunar, selectedPage.details.yearCanChi.displayName) },
-                        onOpenEvent = onOpenEvent,
-                        onOpenHoliday = onOpenHoliday,
-                        onOpenPage = onOpenPage,
+                }
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize().padding(padding),
+                contentPadding = PaddingValues(bottom = 48.dp),
+            ) {
+                item(key = "top") {
+                    TopRow(
+                        month = state.visibleMonth,
+                        isCurrentMonth = isCurrentMonth,
+                        onPickMonth = { showMonthPicker = true },
+                        onToday = { viewModel.onAction(MonthAction.GoToToday) },
                     )
                 }
-
-                CalendarMode.WEEK -> {
-                    item(key = "weekdays") { WeekdayHeader(settings.firstDayOfWeek) }
-                    item(key = "week") {
-                        WeekStrip(viewModel, state.selectedDate, today, settings) { viewModel.onAction(MonthAction.SelectDate(it)) }
+                item(key = "modes") {
+                    ModeSelector(state.mode) { viewModel.onAction(MonthAction.SetMode(it)) }
+                }
+                when (state.mode) {
+                    CalendarMode.MONTH -> {
+                        if (!compactHeight) {
+                            item(key = "cover") {
+                                val cover by remember(state.visibleMonth) { viewModel.cover(state.visibleMonth) }.collectAsStateWithLifecycle()
+                                MonthCover(state.visibleMonth, cover, settings, coverHeight)
+                            }
+                        }
+                        item(key = "weekdays") { WeekdayHeader(settings.firstDayOfWeek) }
+                        item(key = "grid") {
+                            HorizontalPager(
+                                state = monthPager,
+                                key = { it },
+                                modifier = Modifier.fillMaxWidth().height(rowHeight * 6),
+                            ) { page ->
+                                val month = monthOf(page)
+                                val cells by remember(month) { viewModel.monthCells(month) }.collectAsStateWithLifecycle()
+                                MonthGrid(
+                                    cells = cells,
+                                    today = today,
+                                    selected = state.selectedDate,
+                                    showLunar = settings.showLunar,
+                                    onSelect = { viewModel.onAction(MonthAction.SelectDate(it)) },
+                                )
+                            }
+                        }
+                        item(key = "divider") { HorizontalDivider(Modifier.padding(vertical = 6.dp, horizontal = 16.dp)) }
+                        selectedDayItems(
+                            date = state.selectedDate,
+                            holidays = selectedPage.details.holidays.takeIf { selectedPage.details.date == state.selectedDate }.orEmpty(),
+                            occurrences = selectedPage.details.occurrences.takeIf { selectedPage.details.date == state.selectedDate }.orEmpty(),
+                            lunarLabel = { LichFormat.lunarDateLong(selectedPage.details.lunar, selectedPage.details.yearCanChi.displayName) },
+                            onOpenEvent = onOpenEvent,
+                            onOpenHoliday = onOpenHoliday,
+                            onOpenPage = onOpenPage,
+                        )
                     }
-                    item(key = "divider") { HorizontalDivider(Modifier.padding(vertical = 8.dp, horizontal = 16.dp)) }
-                    selectedDayItems(
-                        date = state.selectedDate,
-                        holidays = selectedPage.details.holidays.takeIf { selectedPage.details.date == state.selectedDate }.orEmpty(),
-                        occurrences = selectedPage.details.occurrences.takeIf { selectedPage.details.date == state.selectedDate }.orEmpty(),
-                        lunarLabel = { LichFormat.lunarDateLong(selectedPage.details.lunar, selectedPage.details.yearCanChi.displayName) },
+
+                    CalendarMode.WEEK -> {
+                        item(key = "weekdays") { WeekdayHeader(settings.firstDayOfWeek) }
+                        item(key = "week") {
+                            WeekStrip(viewModel, state.selectedDate, today, settings, compactHeight = false) {
+                                viewModel.onAction(MonthAction.SelectDate(it))
+                            }
+                        }
+                        item(key = "divider") { HorizontalDivider(Modifier.padding(vertical = 6.dp, horizontal = 16.dp)) }
+                        selectedDayItems(
+                            date = state.selectedDate,
+                            holidays = selectedPage.details.holidays.takeIf { selectedPage.details.date == state.selectedDate }.orEmpty(),
+                            occurrences = selectedPage.details.occurrences.takeIf { selectedPage.details.date == state.selectedDate }.orEmpty(),
+                            lunarLabel = { LichFormat.lunarDateLong(selectedPage.details.lunar, selectedPage.details.yearCanChi.displayName) },
+                            onOpenEvent = onOpenEvent,
+                            onOpenHoliday = onOpenHoliday,
+                            onOpenPage = onOpenPage,
+                        )
+                    }
+
+                    CalendarMode.AGENDA -> agendaItems(
+                        agenda = viewModel.agenda,
+                        today = today,
                         onOpenEvent = onOpenEvent,
                         onOpenHoliday = onOpenHoliday,
-                        onOpenPage = onOpenPage,
+                        onLoadMore = { viewModel.onAction(MonthAction.LoadMoreAgenda) },
                     )
                 }
-
-                CalendarMode.AGENDA -> agendaItems(
-                    agenda = viewModel.agenda,
-                    today = today,
-                    onOpenEvent = onOpenEvent,
-                    onOpenHoliday = onOpenHoliday,
-                    onLoadMore = { viewModel.onAction(MonthAction.LoadMoreAgenda) },
-                )
             }
         }
     }
@@ -203,16 +303,60 @@ fun MonthScreen(
 }
 
 @Composable
+private fun CompactLandscapeHeader(
+    month: YearMonth,
+    isCurrentMonth: Boolean,
+    mode: CalendarMode,
+    onPickMonth: () -> Unit,
+    onToday: () -> Unit,
+    onSelectMode: (CalendarMode) -> Unit,
+) {
+    Row(
+        Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Row(
+            Modifier
+                .clip(RoundedCornerShape(10.dp))
+                .clickable(onClickLabel = stringResource(R.string.calendar_pick_month), onClick = onPickMonth)
+                .padding(horizontal = 8.dp, vertical = 6.dp)
+                .semantics(mergeDescendants = true) { heading() },
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                LichFormat.monthYear(month.monthValue, month.year),
+                style = MaterialTheme.typography.titleLarge,
+                maxLines = 1,
+                softWrap = false,
+            )
+            Icon(Icons.Filled.ArrowDropDown, contentDescription = null)
+        }
+        if (!isCurrentMonth) {
+            TextButton(onClick = onToday, contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp)) {
+                Text(stringResource(DsR.string.action_today), maxLines = 1, softWrap = false)
+            }
+        }
+        Box(Modifier.weight(1f))
+        ModeSelector(
+            mode = mode,
+            onSelect = onSelectMode,
+            modifier = Modifier.widthIn(min = 240.dp, max = 340.dp),
+        )
+    }
+}
+
+@Composable
 private fun TopRow(month: YearMonth, isCurrentMonth: Boolean, onPickMonth: () -> Unit, onToday: () -> Unit) {
     Row(
-        Modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp, top = 8.dp),
+        Modifier.fillMaxWidth().padding(start = 8.dp, end = 8.dp, top = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Row(
             Modifier
                 .clip(RoundedCornerShape(12.dp))
                 .clickable(onClickLabel = stringResource(R.string.calendar_pick_month), onClick = onPickMonth)
-                .padding(horizontal = 12.dp, vertical = 8.dp)
+                .padding(horizontal = 12.dp, vertical = 6.dp)
                 .semantics(mergeDescendants = true) { heading() },
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -226,31 +370,35 @@ private fun TopRow(month: YearMonth, isCurrentMonth: Boolean, onPickMonth: () ->
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ModeSelector(mode: CalendarMode, onSelect: (CalendarMode) -> Unit) {
+private fun ModeSelector(
+    mode: CalendarMode,
+    modifier: Modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 6.dp),
+    onSelect: (CalendarMode) -> Unit,
+) {
     val labels = listOf(
         CalendarMode.MONTH to R.string.calendar_mode_month,
         CalendarMode.WEEK to R.string.calendar_mode_week,
         CalendarMode.AGENDA to R.string.calendar_mode_agenda,
     )
-    SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
+    SingleChoiceSegmentedButtonRow(modifier) {
         labels.forEachIndexed { index, (value, label) ->
             SegmentedButton(
                 selected = mode == value,
                 onClick = { onSelect(value) },
                 shape = SegmentedButtonDefaults.itemShape(index, labels.size),
-            ) { Text(stringResource(label)) }
+            ) { Text(stringResource(label), maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) }
         }
     }
 }
 
 /** The picture at the top of a wall-calendar sheet, with the month number printed over it. */
 @Composable
-private fun MonthCover(month: YearMonth, cover: com.app.calendar.core.model.DailyContent?, settings: PageSettings) {
+private fun MonthCover(month: YearMonth, cover: com.app.calendar.core.model.DailyContent?, settings: PageSettings, height: Dp) {
     Box(
         Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp)
-            .height(148.dp)
+            .height(height)
             .clip(RoundedCornerShape(16.dp)),
     ) {
         if (settings.showImages) {
@@ -261,14 +409,20 @@ private fun MonthCover(month: YearMonth, cover: com.app.calendar.core.model.Dail
         Column(
             Modifier
                 .align(Alignment.BottomStart)
-                .padding(12.dp)
+                .padding(10.dp)
                 .clip(RoundedCornerShape(10.dp))
                 .background(MaterialTheme.lich.scrim)
-                .padding(horizontal = 10.dp, vertical = 6.dp),
+                .padding(horizontal = 10.dp, vertical = 5.dp),
         ) {
             Text(LichFormat.monthName(month.monthValue).uppercase(), style = LichTextStyles.Band, color = Color.White)
             cover?.title?.takeIf { it.isNotBlank() }?.let {
-                Text(listOfNotNull(it, cover.province).joinToString(" · "), style = MaterialTheme.typography.labelMedium, color = Color.White.copy(alpha = 0.9f))
+                Text(
+                    listOfNotNull(it, cover.province).joinToString(" · "),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = Color.White.copy(alpha = 0.9f),
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
             }
         }
     }
@@ -280,6 +434,7 @@ private fun WeekStrip(
     selected: LocalDate,
     today: LocalDate,
     settings: PageSettings,
+    compactHeight: Boolean,
     onSelect: (LocalDate) -> Unit,
 ) {
     val anchor = remember(settings.firstDayOfWeek) { WEEK_ANCHOR.with(java.time.temporal.TemporalAdjusters.previousOrSame(settings.firstDayOfWeek)) }
@@ -304,7 +459,8 @@ private fun WeekStrip(
             pager.scrollToPage(target)
         }
     }
-    HorizontalPager(state = pager, key = { it }, modifier = Modifier.fillMaxWidth().height(GridRowHeight)) { page ->
+    val rowHeight = gridRowHeight(settings.showLunar, compactHeight = compactHeight)
+    HorizontalPager(state = pager, key = { it }, modifier = Modifier.fillMaxWidth().height(rowHeight)) { page ->
         val weekStart = anchor.plusWeeks(page.toLong())
         val cells by remember(weekStart) { viewModel.weekCells(weekStart) }.collectAsStateWithLifecycle()
         Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp)) {
@@ -314,8 +470,9 @@ private fun WeekStrip(
                     isToday = cell.date == today,
                     isSelected = cell.date == selected,
                     showLunar = settings.showLunar,
+                    compactHeight = compactHeight,
                     onClick = { onSelect(cell.date) },
-                    modifier = Modifier.weight(1f).height(GridRowHeight),
+                    modifier = Modifier.weight(1f).height(rowHeight),
                 )
             }
         }
@@ -340,7 +497,9 @@ private fun LazyListScope.selectedDayItems(
                 )
                 Text(lunarLabel(), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
-            TextButton(onClick = { onOpenPage(date) }) { Text(stringResource(R.string.calendar_open_page)) }
+            TextButton(onClick = { onOpenPage(date) }) {
+                Text(stringResource(R.string.calendar_open_page), maxLines = 1, softWrap = false)
+            }
         }
     }
     items(holidays, key = { "h-${it.ruleId}-${it.date}" }) { holiday ->
@@ -387,7 +546,10 @@ private fun LazyListScope.agendaItems(
             }
         }
         if (list != null) {
-            TextButton(onClick = onLoadMore, modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)) {
+            TextButton(
+                onClick = onLoadMore,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 12.dp),
+            ) {
                 Text(stringResource(R.string.calendar_agenda_load_more))
             }
         }
@@ -398,20 +560,30 @@ private fun LazyListScope.agendaItems(
 private fun AgendaDayBlock(day: AgendaDay, isToday: Boolean, onOpenEvent: (EventOccurrence) -> Unit, onOpenHoliday: (Holiday) -> Unit) {
     Row(Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 6.dp)) {
         Column(
-            Modifier.padding(start = 8.dp, top = 8.dp).height(56.dp).semantics(mergeDescendants = true) { heading() },
+            Modifier.width(52.dp).padding(top = 8.dp).semantics(mergeDescendants = true) { heading() },
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
                 LichFormat.weekdayShort(day.date.dayOfWeek),
                 style = MaterialTheme.typography.labelMedium,
                 color = if (isToday) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                softWrap = false,
             )
             Text(
                 day.date.dayOfMonth.toString(),
                 style = LichTextStyles.GridDay,
                 color = if (isToday) MaterialTheme.colorScheme.primary else com.app.calendar.core.designsystem.component.dayInkColor(day.date, day.holidays.any { it.category == com.app.calendar.core.model.HolidayCategory.PUBLIC_HOLIDAY }),
+                maxLines = 1,
+                softWrap = false,
             )
-            Text("%02d/%d".format(day.date.monthValue, day.date.year % 100), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                "%02d/%d".format(day.date.monthValue, day.date.year % 100),
+                style = MaterialTheme.typography.labelSmall.copy(fontFeatureSettings = "tnum"),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1,
+                softWrap = false,
+            )
         }
         Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(0.dp)) {
             day.holidays.forEach { HolidayRow(it, onClick = { onOpenHoliday(it) }) }
@@ -437,18 +609,30 @@ private fun MonthPickerDialog(initial: YearMonth, onDismiss: () -> Unit, onPicke
             }
         },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Column(
+                Modifier.verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+            ) {
                 (1..12).chunked(3).forEach { row ->
                     Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
                         row.forEach { m ->
                             val isSelected = initial.year == year && initial.monthValue == m
                             TextButton(
                                 onClick = { onPicked(YearMonth.of(year, m)) },
+                                contentPadding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
                                 modifier = Modifier
                                     .weight(1f)
                                     .clip(RoundedCornerShape(12.dp))
                                     .background(if (isSelected) MaterialTheme.colorScheme.primaryContainer else Color.Transparent),
-                            ) { Text(LichFormat.monthName(m), textAlign = TextAlign.Center) }
+                            ) {
+                                Text(
+                                    LichFormat.monthNumber(m),
+                                    textAlign = TextAlign.Center,
+                                    maxLines = 1,
+                                    softWrap = false,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
                         }
                     }
                 }

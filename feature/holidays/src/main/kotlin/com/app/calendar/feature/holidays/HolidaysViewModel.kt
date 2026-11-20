@@ -3,20 +3,21 @@ package com.app.calendar.feature.holidays
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.calendar.core.domain.holiday.HolidayCalendar
+import com.app.calendar.core.domain.holiday.breaksForHoliday
+import com.app.calendar.core.domain.holiday.buildOfficialBreaks
 import com.app.calendar.core.domain.repository.DailyContentRepository
 import com.app.calendar.core.domain.repository.HolidayRepository
 import com.app.calendar.core.domain.repository.PreferencesRepository
 import com.app.calendar.core.domain.usecase.HolidayCountdown
 import com.app.calendar.core.domain.usecase.ObserveHolidayCountdownUseCase
 import com.app.calendar.core.domain.usecase.UpcomingHolidaysUseCase
-import kotlinx.coroutines.launch
 import com.app.calendar.core.lunar.LunarCalendar
 import com.app.calendar.core.lunar.LunarDate
 import com.app.calendar.core.model.DailyContent
 import com.app.calendar.core.model.Holiday
 import com.app.calendar.core.model.HolidayCategory
 import com.app.calendar.core.model.HolidayRule
-import com.app.calendar.core.model.OfficialDayOff
+import com.app.calendar.core.model.OfficialHolidayBreak
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -30,6 +31,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.mapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -38,12 +40,17 @@ data class HolidayListItem(val holiday: Holiday, val lastDate: LocalDate, val lu
 
 data class HolidaysUiState(
     val year: Int,
+    val today: LocalDate = LocalDate.now(),
     val countdown: HolidayCountdown? = null,
+    val countdownLunar: LunarDate? = null,
     val upcoming: List<Holiday> = emptyList(),
     val filter: Set<HolidayCategory> = HolidayCategory.entries.toSet(),
     val items: List<HolidayListItem>? = null,
-    val daysOff: List<OfficialDayOff> = emptyList(),
-)
+    val officialBreaks: List<OfficialHolidayBreak> = emptyList(),
+    val hasOfficialAnnouncement: Boolean = false,
+) {
+    val totalOfficialDaysOff: Int get() = officialBreaks.sumOf { it.dayCount }
+}
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
@@ -58,7 +65,7 @@ class HolidaysViewModel @Inject constructor(
     private val countdown = observeCountdown(today)
     private val upcoming = flow { emit(upcomingHolidays(today)) }
 
-    private val year = MutableStateFlow(LocalDate.now().year)
+    private val year = MutableStateFlow(today.year)
     private val filter = MutableStateFlow(HolidayCategory.entries.toSet())
 
     private val list = combine(year, filter) { y, f -> y to f }
@@ -69,11 +76,24 @@ class HolidaysViewModel @Inject constructor(
                 .groupBy { it.ruleId to it.date.minusDays(it.dayIndex - 1L) }
                 .map { (_, days) -> HolidayListItem(days.first(), days.last().date, lunarCalendar.toLunar(days.first().date)) }
                 .sortedBy { it.holiday.date }
-            HolidaysUiState(year = y, filter = f, items = items, daysOff = data.daysOff.values.sortedBy { it.date })
+            val officialBreaks = buildOfficialBreaks(data)
+            HolidaysUiState(
+                year = y,
+                today = today,
+                filter = f,
+                items = items,
+                officialBreaks = officialBreaks,
+                hasOfficialAnnouncement = data.daysOff.isNotEmpty(),
+            )
         }
 
-    val state: StateFlow<HolidaysUiState> = combine(list, countdown, upcoming) { base, c, u -> base.copy(countdown = c, upcoming = u) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HolidaysUiState(LocalDate.now().year))
+    val state: StateFlow<HolidaysUiState> = combine(list, countdown, upcoming) { base, c, u ->
+        base.copy(
+            countdown = c,
+            countdownLunar = c?.let { lunarCalendar.toLunar(it.holiday.date) },
+            upcoming = u,
+        )
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HolidaysUiState(today.year, today = today))
 
     fun chooseCountdown(ruleId: String) {
         viewModelScope.launch { preferences.update { it.copy(countdownHolidayId = ruleId) } }
@@ -81,8 +101,14 @@ class HolidaysViewModel @Inject constructor(
 
     fun changeYear(delta: Int) = year.update { (it + delta).coerceIn(1901, 2099) }
 
+    fun resetToCurrentYear() {
+        year.value = today.year
+    }
+
     fun toggle(category: HolidayCategory) = filter.update { if (category in it && it.size > 1) it - category else it + category }
 }
+
+data class UpcomingOccurrence(val year: Int, val date: LocalDate, val lunar: LunarDate)
 
 data class HolidayDetailState(
     val rule: HolidayRule? = null,
@@ -90,8 +116,8 @@ data class HolidayDetailState(
     val lastDate: LocalDate? = null,
     val lunar: LunarDate? = null,
     val content: DailyContent? = null,
-    val daysOff: List<OfficialDayOff> = emptyList(),
-    val upcoming: List<Pair<Int, LocalDate>> = emptyList(),
+    val officialBreaks: List<OfficialHolidayBreak> = emptyList(),
+    val upcoming: List<UpcomingOccurrence> = emptyList(),
     val isLoading: Boolean = true,
 )
 
@@ -107,17 +133,14 @@ class HolidayDetailViewModel @AssistedInject constructor(
 
     val state: StateFlow<HolidayDetailState> = flow {
         val rule = holidayRepository.rules().firstOrNull { it.id == ruleId }
-        val days = holidayCalendar.year(year).holidays.filter { it.ruleId == ruleId }
-        val first = days.firstOrNull()
         val yearData = holidayCalendar.year(year)
-        val daysOff = if (first == null) {
-            emptyList()
-        } else {
-            // Official days off within a week of the holiday (e.g. the full Tết break).
-            yearData.daysOff.values.filter { kotlin.math.abs(it.date.toEpochDay() - first.date.toEpochDay()) <= 7 }.sortedBy { it.date }
-        }
+        val days = yearData.holidays.filter { it.ruleId == ruleId }
+        val first = days.firstOrNull()
+        val officialBreaks = if (first == null) emptyList() else breaksForHoliday(ruleId, yearData)
         val upcoming = (year + 1..year + 5).mapNotNull { y ->
-            holidayCalendar.year(y).holidays.firstOrNull { it.ruleId == ruleId && it.dayIndex == 1 }?.let { y to it.date }
+            holidayCalendar.year(y).holidays.firstOrNull { it.ruleId == ruleId && it.dayIndex == 1 }?.let {
+                UpcomingOccurrence(y, it.date, lunarCalendar.toLunar(it.date))
+            }
         }
         emit(
             HolidayDetailState(
@@ -126,7 +149,7 @@ class HolidayDetailViewModel @AssistedInject constructor(
                 lastDate = days.lastOrNull()?.date,
                 lunar = first?.let { lunarCalendar.toLunar(it.date) },
                 content = first?.let { dailyContent.contentFor(it.date, listOf(ruleId)) },
-                daysOff = daysOff,
+                officialBreaks = officialBreaks,
                 upcoming = upcoming,
                 isLoading = false,
             ),

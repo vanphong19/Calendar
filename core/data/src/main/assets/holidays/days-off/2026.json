@@ -2,35 +2,72 @@
   "year": 2026,
   "entries": [
     {
+      "from": "2026-01-01",
+      "to": "2026-01-04",
+      "kind": "DAY_OFF",
+      "title": "Tết Dương lịch",
+      "holidayIds": ["tet-duong-lich"],
+      "reason": "1 ngày lễ, 1 ngày hoán đổi (Thứ Sáu 02/01) và 2 ngày nghỉ hằng tuần",
+      "source": "Thông báo 12590/TB-BNV năm 2025 của Bộ Nội vụ"
+    },
+    {
+      "from": "2026-01-10",
+      "kind": "MAKE_UP_WORKDAY",
+      "title": "Tết Dương lịch",
+      "holidayIds": ["tet-duong-lich"],
+      "reason": "Làm bù cho thứ Sáu 02/01 được hoán đổi dịp Tết Dương lịch",
+      "source": "Thông báo 12590/TB-BNV năm 2025 của Bộ Nội vụ"
+    },
+    {
       "from": "2026-02-14",
       "to": "2026-02-22",
       "kind": "DAY_OFF",
-      "reason": "Nghỉ Tết Nguyên Đán Bính Ngọ (5 ngày Tết và 4 ngày nghỉ hằng tuần)",
+      "title": "Tết Nguyên Đán Bính Ngọ",
+      "holidayIds": ["tet-nguyen-dan"],
+      "reason": "5 ngày nghỉ Tết và 4 ngày nghỉ hằng tuần (từ 27 tháng Chạp đến hết mùng 6 Tết)",
       "source": "Thông báo 9441/TB-BNV năm 2025 của Bộ Nội vụ"
     },
     {
-      "from": "2026-04-27",
+      "from": "2026-04-25",
+      "to": "2026-04-27",
       "kind": "DAY_OFF",
-      "reason": "Nghỉ bù Giỗ Tổ Hùng Vương (10/3 âm lịch rơi vào Chủ nhật 26/4)",
+      "title": "Giỗ Tổ Hùng Vương",
+      "holidayIds": ["gio-to-hung-vuong"],
+      "reason": "10/3 âm lịch rơi vào Chủ Nhật 26/04, nghỉ bù Thứ Hai 27/04 và cuối tuần",
       "source": "Bộ luật Lao động 2019, Điều 111–112; Công văn 3383/BNV-CVL năm 2026"
+    },
+    {
+      "from": "2026-04-30",
+      "to": "2026-05-03",
+      "kind": "DAY_OFF",
+      "title": "Ngày 30/4 & Quốc tế Lao động",
+      "holidayIds": ["giai-phong-mien-nam", "quoc-te-lao-dong"],
+      "reason": "2 ngày lễ chính thức (30/04–01/05) liền kề 2 ngày nghỉ hằng tuần",
+      "source": "Bộ luật Lao động 2019, Điều 112"
     },
     {
       "from": "2026-08-22",
       "kind": "MAKE_UP_WORKDAY",
-      "reason": "Làm bù cho ngày thứ Hai 31/8 được hoán đổi dịp Quốc khánh",
+      "title": "Quốc khánh 2/9",
+      "holidayIds": ["quoc-khanh"],
+      "reason": "Làm bù cho thứ Hai 31/08 được hoán đổi dịp Quốc khánh",
       "source": "Thông báo 9441/TB-BNV năm 2025 của Bộ Nội vụ"
     },
     {
-      "from": "2026-08-31",
+      "from": "2026-08-29",
       "to": "2026-09-02",
       "kind": "DAY_OFF",
-      "reason": "Nghỉ Quốc khánh (2 ngày lễ và 1 ngày hoán đổi)",
+      "title": "Quốc khánh 2/9",
+      "holidayIds": ["quoc-khanh"],
+      "reason": "2 ngày lễ, 1 ngày hoán đổi (Thứ Hai 31/08) và 2 ngày nghỉ hằng tuần",
       "source": "Thông báo 9441/TB-BNV năm 2025 của Bộ Nội vụ"
     },
     {
       "from": "2026-11-24",
       "kind": "DAY_OFF",
-      "reason": "Nghỉ Ngày Văn hóa Việt Nam (1 ngày, Thứ Ba)",
+      "title": "Ngày Văn hóa Việt Nam",
+      "holidayIds": ["van-hoa-viet-nam"],
+      "reason": "1 ngày nghỉ hưởng nguyên lương (Thứ Ba)",
       "source": "Nghị quyết 28/2026/QH16; Công văn 10065/VPCP-KGVX của Văn phòng Chính phủ"
     }
   ]

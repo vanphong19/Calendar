@@ -38,6 +38,8 @@
     <string name="events_keep_editing">Tiếp tục sửa</string>
 
     <string name="events_custom_reminder_title">Nhắc trước</string>
+    <string name="events_custom_reminder_label">Số lượng</string>
+    <string name="events_custom_reminder_error">Nhập số từ 1 đến 999</string>
     <string name="events_unit_minutes">phút</string>
     <string name="events_unit_hours">giờ</string>
     <string name="events_unit_days">ngày</string>

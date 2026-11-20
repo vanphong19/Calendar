@@ -14,16 +14,22 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -36,6 +42,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,6 +50,7 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -57,6 +65,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -72,6 +81,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -80,6 +90,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -129,7 +140,11 @@ fun EventEditorScreen(
     val close = { if (state.isDirty) confirmDiscard = true else onClose() }
     BackHandler(enabled = state.isDirty) { confirmDiscard = true }
 
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior()
+
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(if (state.isNew) R.string.events_new_title else R.string.events_edit_title)) },
@@ -143,6 +158,7 @@ fun EventEditorScreen(
                         modifier = Modifier.padding(end = 8.dp),
                     ) { Text(stringResource(DsR.string.action_save)) }
                 },
+                scrollBehavior = scrollBehavior,
             )
         },
     ) { padding ->
@@ -151,12 +167,13 @@ fun EventEditorScreen(
             Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .imePadding()
                 .verticalScroll(rememberScrollState())
-                .padding(bottom = 32.dp),
+                .navigationBarsPadding()
+                .imePadding()
+                .padding(bottom = 28.dp),
         ) {
             TitleField(state.title, autoFocus = state.isNew) { viewModel.onAction(EditorAction.Title(it)) }
-            HorizontalDivider()
+            HorizontalDivider(Modifier.padding(horizontal = 20.dp))
 
             SettingRow(label = stringResource(R.string.events_all_day)) {
                 Switch(checked = state.isAllDay, onCheckedChange = { viewModel.onAction(EditorAction.AllDay(it)) })
@@ -177,14 +194,14 @@ fun EventEditorScreen(
             )
             state.startLunar?.let { lunar ->
                 Text(
-                    stringResource(R.string.events_lunar_hint, "${lunar.day} " + LichFormat.lunarMonth(lunar).lowercase()),
+                    stringResource(R.string.events_lunar_hint, "${lunar.day} " + LichFormat.lunarMonth(lunar).replaceFirstChar { it.lowercase() }),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = 20.dp),
                 )
             }
-            state.error?.let { ErrorText(it) }
-            HorizontalDivider(Modifier.padding(top = 12.dp))
+            state.error?.takeIf { it != EditorError.INVALID_UNTIL }?.let { ErrorText(it) }
+            HorizontalDivider(Modifier.padding(horizontal = 20.dp).padding(top = 12.dp))
 
             ClickableRow(
                 label = stringResource(R.string.events_repeat),
@@ -198,8 +215,11 @@ fun EventEditorScreen(
                         ?: stringResource(R.string.events_repeat_forever),
                     onClick = { picker = PickerTarget.UNTIL },
                 )
+                if (state.error == EditorError.INVALID_UNTIL) {
+                    ErrorText(EditorError.INVALID_UNTIL)
+                }
             }
-            HorizontalDivider()
+            HorizontalDivider(Modifier.padding(horizontal = 20.dp))
 
             SectionLabel(stringResource(R.string.events_reminders))
             FlowRow(
@@ -222,11 +242,11 @@ fun EventEditorScreen(
                     )
                 }
             }
-            HorizontalDivider(Modifier.padding(top = 12.dp))
+            HorizontalDivider(Modifier.padding(horizontal = 20.dp).padding(top = 12.dp))
 
             SectionLabel(stringResource(R.string.events_color))
             ColorPicker(state.color) { viewModel.onAction(EditorAction.Color(it)) }
-            HorizontalDivider(Modifier.padding(top = 12.dp))
+            HorizontalDivider(Modifier.padding(horizontal = 20.dp).padding(top = 12.dp))
 
             if (state.showMoreFields) {
                 PlainField(state.location, stringResource(R.string.events_field_location), singleLine = true) {
@@ -236,7 +256,11 @@ fun EventEditorScreen(
                     viewModel.onAction(EditorAction.Note(it))
                 }
             } else {
-                TextButton(onClick = { viewModel.onAction(EditorAction.ShowMoreFields) }, modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)) {
+                TextButton(
+                    onClick = { viewModel.onAction(EditorAction.ShowMoreFields) },
+                    contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp),
+                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 4.dp),
+                ) {
                     Text(stringResource(R.string.events_more_details))
                 }
             }
@@ -272,7 +296,12 @@ fun EventEditorScreen(
             title = { Text(stringResource(R.string.events_discard_title)) },
             text = { Text(stringResource(R.string.events_discard_message)) },
             confirmButton = { TextButton(onClick = { confirmDiscard = false; onClose() }) { Text(stringResource(R.string.events_discard_confirm)) } },
-            dismissButton = { TextButton(onClick = { confirmDiscard = false }) { Text(stringResource(R.string.events_keep_editing)) } },
+            dismissButton = {
+                TextButton(
+                    onClick = { confirmDiscard = false },
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurfaceVariant),
+                ) { Text(stringResource(R.string.events_keep_editing)) }
+            },
         )
     }
 }
@@ -328,15 +357,34 @@ private fun SettingRow(label: String, content: @Composable () -> Unit) {
 @Composable
 private fun DateTimeRow(label: String, date: LocalDate, time: LocalTime?, onDate: () -> Unit, onTime: () -> Unit) {
     Row(
-        Modifier.fillMaxWidth().heightIn(min = 52.dp).padding(horizontal = 12.dp),
+        Modifier.fillMaxWidth().heightIn(min = 52.dp).padding(start = 20.dp, end = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(start = 8.dp).weight(1f))
-        TextButton(onClick = onDate) {
-            Text(LichFormat.weekdayShort(date.dayOfWeek) + ", " + LichFormat.solarDate(date))
+        Text(label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+        TextButton(
+            onClick = onDate,
+            contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+        ) {
+            Text(
+                LichFormat.weekdayShort(date.dayOfWeek) + ", " + LichFormat.solarDate(date),
+                style = LocalTextStyle.current.copy(fontFeatureSettings = "tnum"),
+                maxLines = 1,
+                softWrap = false,
+            )
         }
         if (time != null) {
-            TextButton(onClick = onTime) { Text(LichFormat.time(time)) }
+            TextButton(
+                onClick = onTime,
+                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 6.dp),
+                modifier = Modifier.widthIn(min = 64.dp),
+            ) {
+                Text(
+                    LichFormat.time(time),
+                    style = LocalTextStyle.current.copy(fontFeatureSettings = "tnum"),
+                    maxLines = 1,
+                    softWrap = false,
+                )
+            }
         }
     }
 }
@@ -384,8 +432,12 @@ private fun ErrorText(error: EditorError) {
 @Composable
 private fun ColorPicker(selected: EventColor, onSelect: (EventColor) -> Unit) {
     Row(
-        Modifier.padding(horizontal = 16.dp).selectableGroup(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        Modifier
+            .fillMaxWidth()
+            .widthIn(max = 380.dp)
+            .padding(horizontal = 20.dp)
+            .selectableGroup(),
+        horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         EventColor.entries.forEach { color ->
             val name = LichFormat.eventColorName(color)
@@ -412,7 +464,7 @@ private fun RepeatDialog(state: EventEditorState, onDismiss: () -> Unit, onSelec
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.events_repeat)) },
         text = {
-            Column(Modifier.selectableGroup()) {
+            Column(Modifier.selectableGroup().verticalScroll(rememberScrollState())) {
                 options.forEach { option ->
                     Row(
                         Modifier
@@ -455,6 +507,13 @@ private fun CustomReminderDialog(onDismiss: () -> Unit, onConfirm: (Int) -> Unit
                 OutlinedTextField(
                     value = amount,
                     onValueChange = { amount = it.filter(Char::isDigit).take(3) },
+                    label = { Text(stringResource(R.string.events_custom_reminder_label)) },
+                    isError = value == null,
+                    supportingText = if (value == null) {
+                        { Text(stringResource(R.string.events_custom_reminder_error)) }
+                    } else {
+                        null
+                    },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
@@ -465,7 +524,7 @@ private fun CustomReminderDialog(onDismiss: () -> Unit, onConfirm: (Int) -> Unit
                             selected = unit == index,
                             onClick = { unit = index },
                             shape = SegmentedButtonDefaults.itemShape(index, units.size),
-                        ) { Text(stringResource(label)) }
+                        ) { Text(stringResource(label), maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) }
                     }
                 }
             }
@@ -485,10 +544,14 @@ private fun DateDialog(initial: LocalDate, onDismiss: () -> Unit, allowClear: Bo
     val state = rememberDatePickerState(initialSelectedDateMillis = initial.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli())
     DatePickerDialog(
         onDismissRequest = onDismiss,
+        modifier = Modifier.padding(horizontal = 12.dp),
         confirmButton = {
-            TextButton(onClick = {
-                state.selectedDateMillis?.let { onPicked(Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate()) } ?: onDismiss()
-            }) { Text(stringResource(DsR.string.action_save)) }
+            TextButton(
+                enabled = state.selectedDateMillis != null,
+                onClick = {
+                    state.selectedDateMillis?.let { onPicked(Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate()) } ?: onDismiss()
+                },
+            ) { Text(stringResource(DsR.string.action_save)) }
         },
         dismissButton = {
             Row {

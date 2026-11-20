@@ -20,6 +20,7 @@ google-services.json
 .navigation/
 
 # Build outputs
+bin/
 *.apk
 *.aab
 *.ap_

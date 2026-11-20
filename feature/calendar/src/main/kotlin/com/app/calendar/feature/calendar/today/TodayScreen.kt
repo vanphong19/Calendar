@@ -7,19 +7,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -55,11 +58,14 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -256,27 +262,57 @@ private fun ControlBar(
     onToday: () -> Unit,
     onPickDate: () -> Unit,
 ) {
+    val compactHeight = LocalConfiguration.current.screenHeightDp < 480
+    val fontScale = LocalDensity.current.fontScale
     Row(
-        Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 12.dp),
+        Modifier
+            .fillMaxWidth()
+            .height(if (compactHeight) 48.dp else 60.dp)
+            .padding(horizontal = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         IconButton(onClick = onPrevious) {
             Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = stringResource(DsR.string.action_previous_day))
         }
-        Row(
-            Modifier.weight(1f),
-            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            TextButton(onClick = onPickDate) {
-                Icon(Icons.Filled.DateRange, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
-                Text(
-                    LichFormat.weekdayShort(date.dayOfWeek) + ", " + LichFormat.solarDate(date),
-                    style = MaterialTheme.typography.titleSmall,
-                )
-            }
-            AnimatedVisibility(visible = !isToday) {
-                FilledTonalButton(onClick = onToday) { Text(stringResource(DsR.string.action_today)) }
+        BoxWithConstraints(Modifier.weight(1f), contentAlignment = Alignment.Center) {
+            val useCompactDate = !isToday && (maxWidth < 252.dp || fontScale > 1.15f)
+            val dateLabel = LichFormat.weekdayShort(date.dayOfWeek) + ", " +
+                if (useCompactDate) LichFormat.solarDayMonth(date) else LichFormat.solarDate(date)
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                TextButton(
+                    onClick = onPickDate,
+                    contentPadding = PaddingValues(horizontal = 8.dp, vertical = 4.dp),
+                    modifier = Modifier.weight(1f, fill = false),
+                ) {
+                    Icon(
+                        Icons.Filled.DateRange,
+                        contentDescription = null,
+                        modifier = Modifier.padding(end = 6.dp).size(18.dp),
+                    )
+                    Text(
+                        dateLabel,
+                        style = MaterialTheme.typography.titleSmall.copy(fontFeatureSettings = "tnum"),
+                        maxLines = 1,
+                        softWrap = false,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                }
+                AnimatedVisibility(visible = !isToday) {
+                    FilledTonalButton(
+                        onClick = onToday,
+                        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
+                        modifier = Modifier.heightIn(min = 36.dp),
+                    ) {
+                        Text(
+                            stringResource(DsR.string.action_today),
+                            maxLines = 1,
+                            softWrap = false,
+                        )
+                    }
+                }
             }
         }
         IconButton(onClick = onNext) {
@@ -301,10 +337,14 @@ internal fun DayPickerDialog(initial: LocalDate, onDismiss: () -> Unit, onPicked
     )
     DatePickerDialog(
         onDismissRequest = onDismiss,
+        modifier = Modifier.padding(horizontal = 12.dp),
         confirmButton = {
-            TextButton(onClick = {
-                state.selectedDateMillis?.let { onPicked(Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate()) } ?: onDismiss()
-            }) { Text(stringResource(DsR.string.action_save)) }
+            TextButton(
+                enabled = state.selectedDateMillis != null,
+                onClick = {
+                    state.selectedDateMillis?.let { onPicked(Instant.ofEpochMilli(it).atZone(ZoneOffset.UTC).toLocalDate()) } ?: onDismiss()
+                },
+            ) { Text(stringResource(DsR.string.action_save)) }
         },
         dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(DsR.string.action_cancel)) } },
     ) {

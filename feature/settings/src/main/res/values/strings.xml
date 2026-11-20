@@ -3,7 +3,7 @@
     <string name="settings_title">Cài đặt</string>
     <string name="settings_section_appearance">Giao diện</string>
     <string name="settings_theme">Chế độ hiển thị</string>
-    <string name="settings_theme_system">Theo hệ thống</string>
+    <string name="settings_theme_system">Hệ thống</string>
     <string name="settings_theme_light">Sáng</string>
     <string name="settings_theme_dark">Tối</string>
     <string name="settings_dynamic_color">Màu theo hình nền</string>

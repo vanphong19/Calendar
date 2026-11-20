@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -28,9 +28,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.app.calendar.core.designsystem.component.EmptyState
@@ -52,12 +55,14 @@ fun EventsScreen(
     onOpenEvent: (EventOccurrence) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val expandedFab = LocalConfiguration.current.screenHeightDp >= 480
     Scaffold(
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = { onAddEvent(state.today) },
-                icon = { Icon(Icons.Filled.Add, contentDescription = null) },
+                expanded = expandedFab,
+                icon = { Icon(Icons.Filled.Add, contentDescription = stringResource(DsR.string.action_add_event)) },
                 text = { Text(stringResource(DsR.string.action_add_event)) },
             )
         },
@@ -66,8 +71,15 @@ fun EventsScreen(
             item(key = "title") {
                 Text(
                     stringResource(R.string.events_tab_title),
-                    style = MaterialTheme.typography.headlineMedium,
-                    modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 8.dp).semantics { heading() },
+                    style = if (expandedFab) MaterialTheme.typography.headlineMedium else MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp,
+                            top = if (expandedFab) 16.dp else 8.dp,
+                            bottom = if (expandedFab) 8.dp else 4.dp,
+                        )
+                        .semantics { heading() },
                 )
             }
             item(key = "toggle") {
@@ -78,7 +90,7 @@ fun EventsScreen(
                             selected = state.showPast == past,
                             onClick = { viewModel.setShowPast(past) },
                             shape = SegmentedButtonDefaults.itemShape(index, options.size),
-                        ) { Text(stringResource(label)) }
+                        ) { Text(stringResource(label), maxLines = 1, softWrap = false, overflow = TextOverflow.Ellipsis) }
                     }
                 }
             }
@@ -89,13 +101,15 @@ fun EventsScreen(
                     EmptyState(
                         title = stringResource(R.string.events_list_empty_title),
                         message = stringResource(R.string.events_list_empty_message),
-                        actionLabel = stringResource(DsR.string.action_add_event),
-                        onAction = { onAddEvent(state.today) },
-                        modifier = Modifier.padding(top = 48.dp),
+                        modifier = Modifier.padding(top = if (expandedFab) 48.dp else 16.dp),
                     )
                 }
                 days.isEmpty() -> item(key = "empty-past") {
-                    EmptyState(title = stringResource(R.string.events_past_empty), message = null, modifier = Modifier.padding(top = 48.dp))
+                    EmptyState(
+                        title = stringResource(R.string.events_past_empty),
+                        message = null,
+                        modifier = Modifier.padding(top = if (expandedFab) 48.dp else 16.dp),
+                    )
                 }
                 else -> days.forEach { day ->
                     item(key = "d-${day.date}") { DayHeader(day, state.today) }
@@ -126,7 +140,10 @@ private fun DayHeader(day: EventDay, today: LocalDate) {
             day.date.dayOfMonth.toString(),
             style = LichTextStyles.GridDay.copy(fontSize = LichTextStyles.GridDay.fontSize * 1.5f),
             color = dayInkColor(day.date, isDayOff = false),
-            modifier = Modifier.width(32.dp),
+            textAlign = TextAlign.Center,
+            maxLines = 1,
+            softWrap = false,
+            modifier = Modifier.widthIn(min = 48.dp),
         )
         Column(Modifier.weight(1f)) {
             Text(

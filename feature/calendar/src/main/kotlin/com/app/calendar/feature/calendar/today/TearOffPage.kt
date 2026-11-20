@@ -27,6 +27,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -38,10 +42,13 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.sp
 import com.app.calendar.core.designsystem.component.DailyImageView
 import com.app.calendar.core.designsystem.component.EventColorDot
 import com.app.calendar.core.designsystem.component.dayInkColor
@@ -81,32 +88,71 @@ fun TearOffPage(
     ) {
         BindingStrip()
         BoxWithConstraints(Modifier.fillMaxWidth().weight(1f)) {
+            val landscapeCompact = maxWidth >= 520.dp && maxHeight < 480.dp
             val roomy = maxHeight >= 560.dp
-            val dayNumberHeight = (maxHeight * 0.24f).coerceIn(88.dp, 168.dp)
-            val content: @Composable ColumnScope.() -> Unit = {
-                PageHeader(details)
-                if (settings.showImages) {
-                    PageImage(
-                        state = state,
-                        allowNetwork = settings.allowNetworkImages,
-                        onClick = onOpenDetails,
-                        modifier = if (roomy) Modifier.weight(1f).heightIn(min = 120.dp) else Modifier.height(168.dp),
+            val compactWidth = maxWidth < 360.dp
+            if (landscapeCompact) {
+                val dayNumberHeight = (maxHeight * 0.42f).coerceIn(72.dp, 112.dp)
+                Row(
+                    Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Column(
+                        Modifier
+                            .weight(0.45f)
+                            .fillMaxHeight()
+                            .clickable(onClickLabel = stringResource(R.string.calendar_day_details), onClick = onOpenDetails)
+                            .verticalScroll(rememberScrollState()),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        PageHeader(details)
+                        DayNumber(details, dayNumberHeight, isToday)
+                        HolidayLine(details.holidays, details.dayOff)
+                    }
+                    VerticalDivider(Modifier.fillMaxHeight().padding(vertical = 8.dp), color = colors.ink.copy(alpha = 0.18f))
+                    Column(
+                        Modifier
+                            .weight(0.55f)
+                            .fillMaxHeight()
+                            .verticalScroll(rememberScrollState()),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
+                        if (settings.showLunar) LunarBox(details, compactWidth = true)
+                        PageFooter(state, countdown, onOpenDetails)
+                    }
+                }
+            } else {
+                val dayNumberHeight = (maxHeight * 0.24f).coerceIn(88.dp, 168.dp)
+                val content: @Composable ColumnScope.() -> Unit = {
+                    PageHeader(details)
+                    if (settings.showImages) {
+                        PageImage(
+                            state = state,
+                            allowNetwork = settings.allowNetworkImages,
+                            onClick = onOpenDetails,
+                            modifier = if (roomy) Modifier.weight(1f).heightIn(min = 120.dp) else Modifier.height(168.dp),
+                        )
+                    }
+                    DayNumber(details, dayNumberHeight, isToday)
+                    HolidayLine(details.holidays, details.dayOff)
+                    if (settings.showLunar) LunarBox(details, compactWidth = compactWidth)
+                    PageFooter(state, countdown, onOpenDetails)
+                }
+                val columnModifier = Modifier.fillMaxSize().padding(horizontal = 20.dp).padding(bottom = 14.dp)
+                if (roomy) {
+                    Column(columnModifier, horizontalAlignment = Alignment.CenterHorizontally, content = content)
+                } else {
+                    Column(
+                        columnModifier.verticalScroll(rememberScrollState()),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        content = content,
                     )
                 }
-                DayNumber(details, dayNumberHeight, isToday)
-                HolidayLine(details.holidays, details.dayOff)
-                if (settings.showLunar) LunarBox(details)
-                PageFooter(state, countdown, onOpenDetails)
-            }
-            val columnModifier = Modifier.fillMaxSize().padding(horizontal = 20.dp).padding(bottom = 14.dp)
-            if (roomy) {
-                Column(columnModifier, horizontalAlignment = Alignment.CenterHorizontally, content = content)
-            } else {
-                Column(
-                    columnModifier.verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    content = content,
-                )
             }
         }
     }
@@ -162,7 +208,7 @@ private fun PageImage(state: DayPageState, allowNetwork: Boolean, onClick: () ->
                 text = label,
                 style = MaterialTheme.typography.labelMedium,
                 color = Color.White,
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .align(Alignment.BottomStart)
@@ -235,42 +281,49 @@ private fun HolidayLine(holidays: List<Holiday>, dayOff: OfficialDayOff?) {
 
 /** Three columns like the bottom box of a printed calendar sheet. */
 @Composable
-private fun LunarBox(details: DayDetails) {
+private fun LunarBox(details: DayDetails, compactWidth: Boolean = false) {
     val colors = MaterialTheme.lich
     val lunar = details.lunar
     val muted = colors.inkMuted
+    val titleStyle = if (compactWidth) MaterialTheme.typography.titleSmall.copy(fontSize = 13.sp, lineHeight = 18.sp) else MaterialTheme.typography.titleSmall
+    val bodyStyle = if (compactWidth) MaterialTheme.typography.bodySmall.copy(fontSize = 11.5.sp, lineHeight = 15.sp) else MaterialTheme.typography.bodySmall
+    val centerWidth = if (compactWidth) 68.dp else 90.dp
     HorizontalDivider(color = colors.ink.copy(alpha = 0.18f))
     Row(
         Modifier.fillMaxWidth().height(androidx.compose.foundation.layout.IntrinsicSize.Min).padding(vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Column(Modifier.weight(1f)) {
-            Text(LichFormat.lunarMonth(lunar), style = MaterialTheme.typography.titleSmall, color = colors.ink)
-            Text(
+        Column(Modifier.weight(1f).padding(end = 5.dp)) {
+            AutoFitSingleLineText(LichFormat.lunarMonth(lunar), style = titleStyle, color = colors.ink, minFontSizeSp = 10.5f)
+            AutoFitSingleLineText(
                 stringResource(if (lunar.isFullMonth) DsR.string.lunar_month_full else DsR.string.lunar_month_short),
-                style = MaterialTheme.typography.bodySmall,
+                style = bodyStyle,
                 color = muted,
+                minFontSizeSp = 10f,
             )
-            Text(stringResource(DsR.string.lunar_year, details.yearCanChi.displayName), style = MaterialTheme.typography.bodySmall, color = muted)
+            AutoFitSingleLineText(stringResource(DsR.string.lunar_year, details.yearCanChi.displayName), style = bodyStyle, color = muted, minFontSizeSp = 10f)
         }
         VerticalDivider(Modifier.fillMaxHeight().padding(vertical = 4.dp), color = colors.ink.copy(alpha = 0.18f))
-        Column(Modifier.width(96.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.width(centerWidth), horizontalAlignment = Alignment.CenterHorizontally) {
             Text(
                 lunar.day.toString(),
-                style = LichTextStyles.LunarDay,
+                style = if (compactWidth) LichTextStyles.LunarDay.copy(fontSize = 40.sp, lineHeight = 44.sp) else LichTextStyles.LunarDay,
                 color = if (lunar.day == 1 || lunar.day == 15) colors.bronze else colors.ink,
+                maxLines = 1,
+                softWrap = false,
             )
-            Text(stringResource(R.string.calendar_lunar_label).uppercase(), style = MaterialTheme.typography.labelSmall, color = muted)
+            Text(stringResource(R.string.calendar_lunar_label).uppercase(), style = MaterialTheme.typography.labelSmall, color = muted, maxLines = 1, softWrap = false)
         }
         VerticalDivider(Modifier.fillMaxHeight().padding(vertical = 4.dp), color = colors.ink.copy(alpha = 0.18f))
-        Column(Modifier.weight(1f), horizontalAlignment = Alignment.End) {
-            Text(stringResource(DsR.string.can_chi_day, details.dayCanChi.displayName), style = MaterialTheme.typography.titleSmall, color = colors.ink, textAlign = TextAlign.End)
-            Text(stringResource(DsR.string.can_chi_month, details.monthCanChi.displayName), style = MaterialTheme.typography.bodySmall, color = muted, textAlign = TextAlign.End)
-            Text(
+        Column(Modifier.weight(1f).padding(start = 5.dp), horizontalAlignment = Alignment.End) {
+            AutoFitSingleLineText(stringResource(DsR.string.can_chi_day, details.dayCanChi.displayName), style = titleStyle, color = colors.ink, textAlign = TextAlign.End, minFontSizeSp = 10.5f)
+            AutoFitSingleLineText(stringResource(DsR.string.can_chi_month, details.monthCanChi.displayName), style = bodyStyle, color = muted, textAlign = TextAlign.End, minFontSizeSp = 10f)
+            AutoFitSingleLineText(
                 stringResource(if (details.isSolarTermStart) R.string.calendar_solar_term_starts else R.string.calendar_solar_term, details.solarTerm.displayName),
-                style = MaterialTheme.typography.bodySmall,
+                style = bodyStyle,
                 color = muted,
                 textAlign = TextAlign.End,
+                minFontSizeSp = 9.0f,
             )
         }
     }
@@ -281,6 +334,35 @@ private fun LunarBox(details: DayDetails) {
         color = muted,
         textAlign = TextAlign.Center,
         modifier = Modifier.fillMaxWidth().padding(top = 6.dp),
+    )
+}
+
+/** Keeps a label on one crisp line by gently stepping font size down before ever resorting to ellipsis. */
+@Composable
+private fun AutoFitSingleLineText(
+    text: String,
+    style: TextStyle,
+    color: Color,
+    minFontSizeSp: Float,
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Start,
+) {
+    val baseSp = style.fontSize.value
+    var sizeSp by remember(text, baseSp) { mutableFloatStateOf(baseSp) }
+    Text(
+        text = text,
+        style = style.copy(fontSize = sizeSp.sp),
+        color = color,
+        textAlign = textAlign,
+        maxLines = 1,
+        softWrap = false,
+        overflow = TextOverflow.Ellipsis,
+        onTextLayout = { result ->
+            if ((result.didOverflowWidth || result.hasVisualOverflow || result.isLineEllipsized(0)) && sizeSp > minFontSizeSp) {
+                sizeSp = (sizeSp - 0.5f).coerceAtLeast(minFontSizeSp)
+            }
+        },
+        modifier = modifier,
     )
 }
 

@@ -49,11 +49,22 @@ class BundledDataTest {
     }
 
     @Test
-    fun `official days off for 2026 parse with sources`() = runTest {
+    fun `official days off for 2026 parse with all six breaks, make-up workdays and sources`() = runTest {
         val daysOff = repository.officialDaysOff(2026)
-        assertThat(daysOff.filter { it.kind == OfficialDayOff.Kind.DAY_OFF }.map { it.date })
-            .containsAtLeast(LocalDate.of(2026, 2, 14), LocalDate.of(2026, 2, 22), LocalDate.of(2026, 4, 27), LocalDate.of(2026, 9, 2))
-        assertThat(daysOff.all { it.source.isNotBlank() }).isTrue()
+        val offDates = daysOff.filter { it.kind == OfficialDayOff.Kind.DAY_OFF }.map { it.date }
+        val makeUpDates = daysOff.filter { it.kind == OfficialDayOff.Kind.MAKE_UP_WORKDAY }.map { it.date }
+        assertThat(offDates).containsAtLeast(
+            LocalDate.of(2026, 1, 1), LocalDate.of(2026, 1, 4),
+            LocalDate.of(2026, 2, 14), LocalDate.of(2026, 2, 22),
+            LocalDate.of(2026, 4, 25), LocalDate.of(2026, 4, 27),
+            LocalDate.of(2026, 4, 30), LocalDate.of(2026, 5, 3),
+            LocalDate.of(2026, 8, 29), LocalDate.of(2026, 9, 2),
+            LocalDate.of(2026, 11, 24),
+        )
+        assertThat(makeUpDates).containsExactly(LocalDate.of(2026, 1, 10), LocalDate.of(2026, 8, 22))
+        assertThat(daysOff.all { it.source.isNotBlank() && it.title.isNotBlank() && it.holidayIds.isNotEmpty() }).isTrue()
+        val ruleIds = repository.rules().map { it.id }.toSet()
+        daysOff.flatMap { it.holidayIds }.forEach { assertThat(ruleIds).contains(it) }
         assertThat(repository.officialDaysOff(1999)).isEmpty()
     }
 }

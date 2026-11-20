@@ -57,7 +57,14 @@ internal class AssetHolidayRepository @Inject constructor(
             val from = LocalDate.parse(entry.from)
             val to = LocalDate.parse(entry.to ?: entry.from)
             generateSequence(from) { it.plusDays(1) }.takeWhile { !it.isAfter(to) }.map { date ->
-                OfficialDayOff(date, OfficialDayOff.Kind.valueOf(entry.kind), entry.reason, entry.source)
+                OfficialDayOff(
+                    date = date,
+                    kind = OfficialDayOff.Kind.valueOf(entry.kind),
+                    reason = entry.reason,
+                    source = entry.source,
+                    title = entry.title,
+                    holidayIds = entry.holidayIds,
+                )
             }.toList()
         }
 
@@ -91,6 +98,8 @@ private data class DayOffEntryDto(
     val from: String,
     val to: String? = null,
     val kind: String = "DAY_OFF",
+    val title: String = "",
+    val holidayIds: List<String> = emptyList(),
     val reason: String,
     val source: String,
 )

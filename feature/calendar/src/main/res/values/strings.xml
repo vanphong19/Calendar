@@ -2,7 +2,7 @@
 <resources>
     <string name="calendar_lunar_label">Âm lịch</string>
     <string name="calendar_solar_term">Tiết %1$s</string>
-    <string name="calendar_solar_term_starts">Bắt đầu tiết %1$s</string>
+    <string name="calendar_solar_term_starts">Vào tiết %1$s</string>
     <string name="calendar_auspicious_hours">Giờ hoàng đạo</string>
     <string name="calendar_auspicious_hour_range">%1$s (%2$d–%3$d)</string>
     <string name="calendar_events_more">+%1$d sự kiện khác</string>

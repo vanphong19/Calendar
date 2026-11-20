@@ -35,7 +35,13 @@ object LichFormat {
     fun monthYear(month: Int, year: Int): String = stringResource(R.string.month_year, month, year)
 
     @Composable @ReadOnlyComposable
+    fun monthNumber(month: Int): String = stringResource(R.string.month_number, month)
+
+    @Composable @ReadOnlyComposable
     fun solarDate(date: LocalDate): String = stringResource(R.string.solar_date, date.dayOfMonth, date.monthValue, date.year)
+
+    @Composable @ReadOnlyComposable
+    fun solarDayMonth(date: LocalDate): String = stringResource(R.string.solar_day_month, date.dayOfMonth, date.monthValue)
 
     /** "Tháng Mười" / "Tháng Sáu nhuận". */
     @Composable @ReadOnlyComposable
@@ -64,7 +70,12 @@ object LichFormat {
         if (occurrence.event.isAllDay) {
             stringResource(R.string.all_day)
         } else {
-            stringResource(R.string.time_range, time(occurrence.start.toLocalTime()), time(occurrence.end.toLocalTime()))
+            val extraDays = java.time.temporal.ChronoUnit.DAYS.between(occurrence.start.toLocalDate(), occurrence.end.toLocalDate())
+            if (extraDays > 0L) {
+                stringResource(R.string.time_range_next_days, time(occurrence.start.toLocalTime()), time(occurrence.end.toLocalTime()), extraDays.toInt())
+            } else {
+                stringResource(R.string.time_range, time(occurrence.start.toLocalTime()), time(occurrence.end.toLocalTime()))
+            }
         }
 
     @Composable @ReadOnlyComposable

@@ -1,16 +1,20 @@
 package com.app.calendar.feature.calendar.today
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SuggestionChip
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -40,7 +44,10 @@ fun DayDetailContent(
     onOpenHoliday: (Holiday) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(modifier, contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 24.dp)) {
+    LazyColumn(
+        modifier.navigationBarsPadding(),
+        contentPadding = PaddingValues(bottom = 32.dp),
+    ) {
         dayDetailItems(state, onOpenEvent, onOpenHoliday)
     }
 }
@@ -102,7 +109,10 @@ fun LazyListScope.dayDetailItems(
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
-                        TextButton(onClick = { runCatching { uriHandler.openUri(image.sourceUrl) } }) {
+                        TextButton(
+                            onClick = { runCatching { uriHandler.openUri(image.sourceUrl) } },
+                            contentPadding = PaddingValues(horizontal = 0.dp, vertical = 4.dp),
+                        ) {
                             Text(stringResource(R.string.calendar_sheet_image_source))
                         }
                     }
@@ -136,13 +146,23 @@ fun LazyListScope.dayDetailItems(
                 style = MaterialTheme.typography.bodyMedium,
             )
             Text(stringResource(R.string.calendar_auspicious_hours), style = MaterialTheme.typography.labelLarge, color = MaterialTheme.lich.bronze)
-            FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
                 details.auspiciousHours.forEach { chi ->
-                    SuggestionChip(
-                        onClick = {},
-                        enabled = false,
-                        label = { Text(stringResource(R.string.calendar_auspicious_hour_range, chi.displayName, chi.startHour, chi.endHour)) },
-                    )
+                    Surface(
+                        shape = RoundedCornerShape(8.dp),
+                        color = MaterialTheme.colorScheme.surfaceContainerLow,
+                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                    ) {
+                        Text(
+                            stringResource(R.string.calendar_auspicious_hour_range, chi.displayName, chi.startHour, chi.endHour),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                        )
+                    }
                 }
             }
         }

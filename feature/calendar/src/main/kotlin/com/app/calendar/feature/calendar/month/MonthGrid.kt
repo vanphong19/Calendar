@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.clearAndSetSemantics
@@ -44,7 +45,27 @@ import com.app.calendar.feature.calendar.R
 import java.time.DayOfWeek
 import java.time.LocalDate
 
-val GridRowHeight: Dp = 58.dp
+val GridRowHeight: Dp = 54.dp
+private val CellPadding = 2.dp
+private val MarkerHeight = 5.dp // EventColorDot is taller than the 3dp holiday marker.
+
+private fun contentPadding(compactHeight: Boolean) = if (compactHeight) 1.dp else 3.dp
+private fun markerSpacing(compactHeight: Boolean) = if (compactHeight) 1.dp else 2.dp
+
+@Composable
+private fun dayNumberSize(compactHeight: Boolean): Dp = with(LocalDensity.current) {
+    maxOf(if (compactHeight) 22.dp else 28.dp, LichTextStyles.GridDay.lineHeight.toDp())
+}
+
+@Composable
+fun gridRowHeight(showLunar: Boolean, compactHeight: Boolean = false): Dp {
+    val lunarHeight = with(LocalDensity.current) {
+        if (showLunar) LichTextStyles.GridLunar.lineHeight.toDp() else 0.dp
+    }
+    // Include both text rows, markers and padding, with room for pixel rounding.
+    return CellPadding * 2 + contentPadding(compactHeight) * 2 +
+        dayNumberSize(compactHeight) + lunarHeight + markerSpacing(compactHeight) + MarkerHeight + 2.dp
+}
 
 @Composable
 fun WeekdayHeader(firstDayOfWeek: DayOfWeek, modifier: Modifier = Modifier) {
@@ -76,20 +97,23 @@ fun MonthGrid(
     showLunar: Boolean,
     onSelect: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
+    compactHeight: Boolean = false,
 ) {
+    val rowHeight = gridRowHeight(showLunar, compactHeight)
     Column(modifier.padding(horizontal = 8.dp)) {
         if (cells.isEmpty()) {
-            Spacer(Modifier.height(GridRowHeight * 6))
+            Spacer(Modifier.height(rowHeight * 6))
             return@Column
         }
         cells.chunked(7).forEach { week ->
-            Row(Modifier.fillMaxWidth().height(GridRowHeight)) {
+            Row(Modifier.fillMaxWidth().height(rowHeight)) {
                 week.forEach { cell ->
                     DayCellView(
                         cell = cell,
                         isToday = cell.date == today,
                         isSelected = cell.date == selected,
                         showLunar = showLunar,
+                        compactHeight = compactHeight,
                         onClick = { onSelect(cell.date) },
                         modifier = Modifier.weight(1f).fillMaxSize(),
                     )
@@ -107,8 +131,10 @@ fun DayCellView(
     showLunar: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    compactHeight: Boolean = false,
 ) {
     val colors = MaterialTheme.lich
+    val numberSize = dayNumberSize(compactHeight)
     val ink = dayInkColor(cell.date, cell.isPublicHoliday)
     val numberColor = if (isToday) MaterialTheme.colorScheme.onPrimary else ink
     val background by animateColorAsState(
@@ -126,7 +152,7 @@ fun DayCellView(
     }
     Box(
         modifier
-            .padding(2.dp)
+            .padding(CellPadding)
             .clip(RoundedCornerShape(14.dp))
             .background(background)
             .then(if (isSelected && isToday) Modifier.border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(14.dp)) else Modifier)
@@ -139,27 +165,38 @@ fun DayCellView(
             .alpha(if (cell.isInCurrentMonth) 1f else 0.38f),
     ) {
         Column(
-            Modifier.fillMaxSize().padding(top = 4.dp, bottom = 4.dp),
+            Modifier.fillMaxSize().padding(vertical = contentPadding(compactHeight)),
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
         ) {
             Box(
                 Modifier
-                    .size(30.dp)
+                    .size(numberSize)
                     .clip(CircleShape)
                     .background(if (isToday) MaterialTheme.colorScheme.primary else Color.Transparent),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(cell.date.dayOfMonth.toString(), style = LichTextStyles.GridDay, color = numberColor)
+                Text(
+                    cell.date.dayOfMonth.toString(),
+                    style = if (compactHeight) LichTextStyles.GridDay.copy(fontSize = LichTextStyles.GridDay.fontSize * 0.8f) else LichTextStyles.GridDay,
+                    color = numberColor,
+                    maxLines = 1,
+                    softWrap = false,
+                )
             }
             if (showLunar) {
                 val lunarColor = when {
                     cell.lunar.day == 1 || cell.lunar.day == 15 -> colors.bronze
                     else -> colors.inkMuted
                 }
-                Text(lunarLabel, style = LichTextStyles.GridLunar, color = lunarColor)
+                Text(lunarLabel, style = LichTextStyles.GridLunar, color = lunarColor, maxLines = 1, softWrap = false)
             }
-            Spacer(Modifier.weight(1f))
-            Row(horizontalArrangement = Arrangement.spacedBy(2.dp), verticalAlignment = Alignment.CenterVertically) {
+            Spacer(Modifier.height(markerSpacing(compactHeight)))
+            Row(
+                Modifier.height(MarkerHeight),
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 val holidayColor = cell.holidays.firstOrNull()?.let {
                     when (it.category) {
                         HolidayCategory.PUBLIC_HOLIDAY -> colors.sunday

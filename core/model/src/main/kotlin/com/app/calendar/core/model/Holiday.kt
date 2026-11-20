@@ -51,8 +51,30 @@ data class OfficialDayOff(
     val reason: String,
     /** Legal document or announcement the entry comes from. */
     val source: String,
+    /** Display name for the holiday break (e.g. "Tết Nguyên Đán Bính Ngọ"). */
+    val title: String = "",
+    /** Rule IDs of the holidays associated with this official day-off or make-up workday. */
+    val holidayIds: List<String> = emptyList(),
 ) {
     enum class Kind { DAY_OFF, MAKE_UP_WORKDAY }
+}
+
+/** A grouped official holiday break (consecutive days off plus any associated make-up workdays). */
+data class OfficialHolidayBreak(
+    val id: String,
+    val title: String,
+    val startDate: LocalDate,
+    val endDate: LocalDate,
+    val reason: String,
+    val source: String,
+    val holidayIds: List<String>,
+    val makeUpWorkdays: List<OfficialDayOff> = emptyList(),
+    /** True when backed by an announced yearly schedule; false when synthesized from statutory rules. */
+    val isAnnounced: Boolean = true,
+    /** Statutory or announced number of days off to show on the badge (defaults to date-range span). */
+    val displayDays: Int = (endDate.toEpochDay() - startDate.toEpochDay()).toInt() + 1,
+) {
+    val dayCount: Int get() = (endDate.toEpochDay() - startDate.toEpochDay()).toInt() + 1
 }
 
 /** Use a holiday's dedicated image only on its first day; later days keep their own daily image. */
