@@ -17,6 +17,7 @@ import coil3.request.ImageRequest
 import com.app.calendar.core.domain.holiday.HolidayCalendar
 import com.app.calendar.core.domain.repository.DailyContentRepository
 import com.app.calendar.core.domain.repository.PreferencesRepository
+import com.app.calendar.core.model.dailyContentRuleIds
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import kotlinx.coroutines.flow.first
@@ -47,7 +48,7 @@ class PrefetchDailyImagesWorker @AssistedInject constructor(
 
         for (offset in 0 until WINDOW_DAYS) {
             val date = today.plusDays(offset.toLong())
-            val holidayIds = holidayCalendar.year(date.year).holidaysOn(date).map { it.ruleId }
+            val holidayIds = holidayCalendar.year(date.year).holidaysOn(date).dailyContentRuleIds()
             dailyContent.contentFor(date, holidayIds).image?.remoteUrl?.let(urls::add)
         }
         // Wall-calendar covers for this month and the next.

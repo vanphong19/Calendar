@@ -54,3 +54,6 @@ data class OfficialDayOff(
 ) {
     enum class Kind { DAY_OFF, MAKE_UP_WORKDAY }
 }
+
+/** Use a holiday's dedicated image only on its first day; later days keep their own daily image. */
+fun List<Holiday>.dailyContentRuleIds(): List<String> = filter { it.dayIndex == 1 }.map { it.ruleId }

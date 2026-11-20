@@ -5,6 +5,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.app.calendar.core.data.assets.AssetReader
 import com.app.calendar.core.data.repository.AssetDailyContentRepository
 import com.app.calendar.core.data.repository.AssetHolidayRepository
+import com.app.calendar.core.model.dailyContentRuleIds
 import com.google.common.truth.Truth.assertThat
 import com.google.common.truth.Truth.assertWithMessage
 import kotlinx.coroutines.Dispatchers
@@ -85,6 +86,19 @@ class DailyManifestTest {
     }
 
     @Test
+    fun `tet multi day period uses different images for each day`() = runTest {
+        val holidays = com.app.calendar.core.domain.holiday.HolidayCalendar(
+            AssetHolidayRepository(reader), lunar,
+        ).year(2026)
+        val ids = (0L..2L).map { offset ->
+            val date = LocalDate.of(2026, 2, 17).plusDays(offset)
+            repository.contentFor(date, holidays.holidaysOn(date).dailyContentRuleIds()).image?.sourceUrl
+        }
+        assertThat(ids).doesNotContain(null)
+        assertThat(ids.toSet()).hasSize(3)
+    }
+
+    @Test
     fun `pool sayings always match the lunar season of the day`() {
         var date = LocalDate.of(2026, 1, 1)
         val seasonalSeen = mutableSetOf<String>()
@@ -107,5 +121,48 @@ class DailyManifestTest {
         }
     }
 
+    @Test
+    fun `every place appears once and all 63 former provinces are covered`() {
+        val entries = manifest.days.values + manifest.holidays.values + manifest.months.values
+        val places = entries.map { it.place }
+        assertWithMessage("entries without place").that(places.filter { it.isNullOrBlank() }).isEmpty()
+        val repeated = places.groupingBy { it }.eachCount().filterValues { it > 1 }
+        assertWithMessage("places used more than once").that(repeated).isEmpty()
+
+        // Check the underlying file as well: different slugs must not hide the same photo.
+        val imageIds = entries.mapNotNull { it.image }
+        assertWithMessage("images used more than once").that(imageIds.toSet()).hasSize(imageIds.size)
+
+        // Known aliases and commonly confused places need an explicit canonical identity.
+        val aliases = mapOf("con-lan" to "cu-lao-thoi-son")
+        val canonicalPlaces = places.mapNotNull { it }.map { aliases[it] ?: it }
+        assertWithMessage("same place under different names").that(canonicalPlaces.toSet()).hasSize(canonicalPlaces.size)
+
+        val perProvince = manifest.days.values.groupingBy { it.province }.eachCount()
+        assertWithMessage("unknown province names").that(perProvince.keys - FORMER_PROVINCES).isEmpty()
+        FORMER_PROVINCES.forEach { province ->
+            assertWithMessage("days for $province").that(perProvince[province] ?: 0).isAtLeast(MIN_DAYS_PER_PROVINCE)
+            assertWithMessage("days for $province").that(perProvince[province] ?: 0).isAtMost(MAX_DAYS_PER_PROVINCE)
+        }
+    }
+
     private fun assertWithId(id: String, condition: Boolean) = assertWithMessage(id).that(condition).isTrue()
+
+    private companion object {
+        const val MIN_DAYS_PER_PROVINCE = 3
+        const val MAX_DAYS_PER_PROVINCE = 12
+
+        /** The 63 provinces and cities before the 2025 merger, spelled as shown in the app. */
+        val FORMER_PROVINCES = setOf(
+            "Hà Nội", "TP. Hồ Chí Minh", "Hải Phòng", "Đà Nẵng", "Cần Thơ",
+            "An Giang", "Bà Rịa – Vũng Tàu", "Bắc Giang", "Bắc Kạn", "Bạc Liêu", "Bắc Ninh", "Bến Tre",
+            "Bình Định", "Bình Dương", "Bình Phước", "Bình Thuận", "Cà Mau", "Cao Bằng", "Đắk Lắk",
+            "Đắk Nông", "Điện Biên", "Đồng Nai", "Đồng Tháp", "Gia Lai", "Hà Giang", "Hà Nam", "Hà Tĩnh",
+            "Hải Dương", "Hậu Giang", "Hòa Bình", "Hưng Yên", "Khánh Hòa", "Kiên Giang", "Kon Tum",
+            "Lai Châu", "Lâm Đồng", "Lạng Sơn", "Lào Cai", "Long An", "Nam Định", "Nghệ An", "Ninh Bình",
+            "Ninh Thuận", "Phú Thọ", "Phú Yên", "Quảng Bình", "Quảng Nam", "Quảng Ngãi", "Quảng Ninh",
+            "Quảng Trị", "Sóc Trăng", "Sơn La", "Tây Ninh", "Thái Bình", "Thái Nguyên", "Thanh Hóa",
+            "Thừa Thiên Huế", "Tiền Giang", "Trà Vinh", "Tuyên Quang", "Vĩnh Long", "Vĩnh Phúc", "Yên Bái",
+        )
+    }
 }

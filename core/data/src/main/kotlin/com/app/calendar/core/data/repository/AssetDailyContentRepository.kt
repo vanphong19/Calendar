@@ -99,6 +99,8 @@ internal data class EntryDto(
     val title: String,
     val caption: String = "",
     val province: String? = null,
+    /** Stable id of the place or festival shown; each place is used once per year. */
+    val place: String? = null,
     val image: String? = null,
     val saying: SayingDto? = null,
 )

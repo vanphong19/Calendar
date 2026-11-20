@@ -5,6 +5,7 @@ import com.app.calendar.core.domain.repository.NetworkMonitor
 import com.app.calendar.core.domain.repository.PreferencesRepository
 import com.app.calendar.core.domain.usecase.ObserveDayDetailsUseCase
 import com.app.calendar.core.model.DailyContent
+import com.app.calendar.core.model.dailyContentRuleIds
 import com.app.calendar.core.model.DayDetails
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -56,7 +57,7 @@ class DayPageLoader @Inject constructor(
     fun page(date: LocalDate, scope: CoroutineScope): StateFlow<DayPageState> = synchronized(cache) {
         cache.getOrPut(date) {
             observeDayDetails(date)
-                .mapLatest { details -> DayPageState(details, dailyContent.contentFor(date, details.holidays.map { it.ruleId })) }
+                .mapLatest { details -> DayPageState(details, dailyContent.contentFor(date, details.holidays.dailyContentRuleIds())) }
                 .stateIn(scope, SharingStarted.WhileSubscribed(5_000), initial(date))
         }
     }
