@@ -30,7 +30,7 @@ class BundledDataTest {
         val rules = repository.rules()
         assertThat(rules.map { it.id }.toSet()).hasSize(rules.size)
         assertThat(rules.map { it.id }).containsAtLeast(
-            "tet-duong-lich", "tet-nguyen-dan", "gio-to-hung-vuong", "giai-phong-mien-nam",
+            "tet-duong-lich", "tet-nguyen-dan", "gio-to-hung-vuong", "giai-phong-mien-nam", "van-hoa-viet-nam",
             "quoc-te-lao-dong", "quoc-khanh", "quoc-te-phu-nu", "phu-nu-viet-nam", "nha-giao", "trung-thu",
         )
         rules.forEach { rule ->

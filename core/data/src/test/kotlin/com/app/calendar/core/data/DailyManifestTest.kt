@@ -46,7 +46,7 @@ class DailyManifestTest {
 
     @Test
     fun `references, licenses and bundled files are valid`() {
-        val referenced = (manifest.days.values + manifest.holidays.values + manifest.months.values).mapNotNull { it.image }
+        val referenced = (manifest.days.values + manifest.holidays.values + manifest.months.values).mapNotNull { it.image }.toSet()
         assertThat(manifest.images.keys).containsAtLeastElementsIn(referenced)
         manifest.images.forEach { (id, image) ->
             assertWithId(id, allowedLicense.matches(image.license.trim()))

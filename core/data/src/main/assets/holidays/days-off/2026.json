@@ -26,6 +26,12 @@
       "kind": "DAY_OFF",
       "reason": "Nghỉ Quốc khánh (2 ngày lễ và 1 ngày hoán đổi)",
       "source": "Thông báo 9441/TB-BNV năm 2025 của Bộ Nội vụ"
+    },
+    {
+      "from": "2026-11-24",
+      "kind": "DAY_OFF",
+      "reason": "Nghỉ Ngày Văn hóa Việt Nam (1 ngày, Thứ Ba)",
+      "source": "Nghị quyết 28/2026/QH16; Công văn 10065/VPCP-KGVX của Văn phòng Chính phủ"
     }
   ]
 }

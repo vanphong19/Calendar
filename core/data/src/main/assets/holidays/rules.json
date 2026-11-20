@@ -1,6 +1,6 @@
 {
  "version": 1,
- "source": "Bộ luật Lao động 2019, Điều 112; các ngày kỷ niệm phổ biến",
+ "source": "Bộ luật Lao động 2019, Điều 112; Nghị quyết 28/2026/QH16; các ngày kỷ niệm phổ biến",
  "rules": [
   {
    "id": "tet-duong-lich",
@@ -181,6 +181,16 @@
    "month": 11,
    "day": 20,
    "description": "Tri ân thầy cô – \"Tôn sư trọng đạo\"."
+  },
+  {
+   "id": "van-hoa-viet-nam",
+   "name": "Ngày Văn hóa Việt Nam",
+   "category": "PUBLIC_HOLIDAY",
+   "calendar": "SOLAR",
+   "month": 11,
+   "day": 24,
+   "description": "Ngày tôn vinh, gìn giữ và phát huy giá trị văn hóa dân tộc. Từ năm 2026, người lao động được nghỉ làm việc, hưởng nguyên lương (Nghị quyết 28/2026/QH16).",
+   "sinceYear": 2026
   },
   {
    "id": "quan-doi",
