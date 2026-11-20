@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="holidays_title">Ngày lễ %1$d</string>
+    <string name="holidays_previous_year">Năm trước</string>
+    <string name="holidays_next_year">Năm sau</string>
+    <string name="holidays_days_off">Lịch nghỉ chính thức</string>
+    <string name="holidays_days_off_missing">Lịch nghỉ bù năm %1$d chưa được công bố. Ứng dụng chỉ hiển thị khi có thông báo chính thức.</string>
+    <string name="holidays_source">Nguồn: %1$s</string>
+    <string name="holidays_empty">Không có ngày lễ nào trong nhóm đã chọn.</string>
+    <string name="holidays_range">%1$s – %2$s</string>
+    <string name="holidays_lunar_date">%1$d/%2$d âm lịch</string>
+    <string name="holidays_lunar_last_day">Ngày cuối tháng %1$s âm lịch</string>
+    <string name="holidays_solar_rule">Ngày %1$d/%2$d dương lịch hằng năm</string>
+    <string name="holidays_lunar_rule">Ngày %1$d/%2$d âm lịch hằng năm, ngày dương lịch thay đổi theo từng năm</string>
+    <string name="holidays_upcoming_years">Các năm tới</string>
+    <string name="holidays_not_found">Không tìm thấy ngày lễ này.</string>
+    <string name="holidays_days_count">%1$d ngày</string>
+</resources>

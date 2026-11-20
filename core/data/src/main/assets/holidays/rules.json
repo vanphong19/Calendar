@@ -1,0 +1,306 @@
+{
+ "version": 1,
+ "source": "Bộ luật Lao động 2019, Điều 112; các ngày kỷ niệm phổ biến",
+ "rules": [
+  {
+   "id": "tet-duong-lich",
+   "name": "Tết Dương lịch",
+   "category": "PUBLIC_HOLIDAY",
+   "calendar": "SOLAR",
+   "month": 1,
+   "day": 1,
+   "description": "Ngày đầu tiên của năm mới theo dương lịch. Người lao động được nghỉ 1 ngày hưởng nguyên lương."
+  },
+  {
+   "id": "thanh-lap-dang",
+   "name": "Ngày thành lập Đảng Cộng sản Việt Nam",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 2,
+   "day": 3,
+   "description": "Kỷ niệm ngày thành lập Đảng Cộng sản Việt Nam (3/2/1930)."
+  },
+  {
+   "id": "valentine",
+   "name": "Lễ Tình nhân",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 2,
+   "day": 14,
+   "description": "Ngày Valentine, dịp để bày tỏ tình cảm với người thương."
+  },
+  {
+   "id": "thay-thuoc",
+   "name": "Ngày Thầy thuốc Việt Nam",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 2,
+   "day": 27,
+   "description": "Tri ân những người làm công tác y tế (27/2/1955)."
+  },
+  {
+   "id": "quoc-te-phu-nu",
+   "name": "Ngày Quốc tế Phụ nữ",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 3,
+   "day": 8,
+   "description": "Tôn vinh phụ nữ trên toàn thế giới."
+  },
+  {
+   "id": "thanh-lap-doan",
+   "name": "Ngày thành lập Đoàn TNCS Hồ Chí Minh",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 3,
+   "day": 26,
+   "description": "Kỷ niệm ngày thành lập Đoàn Thanh niên Cộng sản Hồ Chí Minh (26/3/1931)."
+  },
+  {
+   "id": "giai-phong-mien-nam",
+   "name": "Ngày Giải phóng miền Nam, thống nhất đất nước",
+   "category": "PUBLIC_HOLIDAY",
+   "calendar": "SOLAR",
+   "month": 4,
+   "day": 30,
+   "description": "Kỷ niệm ngày 30/4/1975, đất nước thống nhất. Người lao động được nghỉ 1 ngày."
+  },
+  {
+   "id": "quoc-te-lao-dong",
+   "name": "Ngày Quốc tế Lao động",
+   "category": "PUBLIC_HOLIDAY",
+   "calendar": "SOLAR",
+   "month": 5,
+   "day": 1,
+   "description": "Ngày của người lao động trên toàn thế giới. Người lao động được nghỉ 1 ngày."
+  },
+  {
+   "id": "dien-bien-phu",
+   "name": "Ngày Chiến thắng Điện Biên Phủ",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 5,
+   "day": 7,
+   "description": "Kỷ niệm chiến thắng Điện Biên Phủ (7/5/1954)."
+  },
+  {
+   "id": "sinh-nhat-bac",
+   "name": "Ngày sinh Chủ tịch Hồ Chí Minh",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 5,
+   "day": 19,
+   "description": "Kỷ niệm ngày sinh Chủ tịch Hồ Chí Minh (19/5/1890)."
+  },
+  {
+   "id": "quoc-te-thieu-nhi",
+   "name": "Ngày Quốc tế Thiếu nhi",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 6,
+   "day": 1,
+   "description": "Ngày dành cho trẻ em trên toàn thế giới."
+  },
+  {
+   "id": "bao-chi",
+   "name": "Ngày Báo chí Cách mạng Việt Nam",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 6,
+   "day": 21,
+   "description": "Kỷ niệm ngày ra số báo Thanh Niên đầu tiên (21/6/1925)."
+  },
+  {
+   "id": "gia-dinh",
+   "name": "Ngày Gia đình Việt Nam",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 6,
+   "day": 28,
+   "description": "Ngày tôn vinh giá trị gia đình Việt Nam."
+  },
+  {
+   "id": "thuong-binh-liet-si",
+   "name": "Ngày Thương binh – Liệt sĩ",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 7,
+   "day": 27,
+   "description": "Tưởng nhớ, tri ân các thương binh, liệt sĩ."
+  },
+  {
+   "id": "cach-mang-thang-tam",
+   "name": "Ngày Cách mạng Tháng Tám",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 8,
+   "day": 19,
+   "description": "Kỷ niệm Cách mạng Tháng Tám thành công (19/8/1945)."
+  },
+  {
+   "id": "quoc-khanh",
+   "name": "Quốc khánh",
+   "category": "PUBLIC_HOLIDAY",
+   "calendar": "SOLAR",
+   "month": 9,
+   "day": 2,
+   "description": "Kỷ niệm ngày Chủ tịch Hồ Chí Minh đọc Tuyên ngôn Độc lập (2/9/1945). Ngày nghỉ liền kề được công bố theo từng năm."
+  },
+  {
+   "id": "giai-phong-thu-do",
+   "name": "Ngày Giải phóng Thủ đô",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 10,
+   "day": 10,
+   "description": "Kỷ niệm ngày tiếp quản Thủ đô Hà Nội (10/10/1954)."
+  },
+  {
+   "id": "doanh-nhan",
+   "name": "Ngày Doanh nhân Việt Nam",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 10,
+   "day": 13,
+   "description": "Tôn vinh đội ngũ doanh nhân Việt Nam."
+  },
+  {
+   "id": "phu-nu-viet-nam",
+   "name": "Ngày Phụ nữ Việt Nam",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 10,
+   "day": 20,
+   "description": "Kỷ niệm ngày thành lập Hội Liên hiệp Phụ nữ Việt Nam (20/10/1930)."
+  },
+  {
+   "id": "nha-giao",
+   "name": "Ngày Nhà giáo Việt Nam",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 11,
+   "day": 20,
+   "description": "Tri ân thầy cô – \"Tôn sư trọng đạo\"."
+  },
+  {
+   "id": "quan-doi",
+   "name": "Ngày thành lập Quân đội Nhân dân Việt Nam",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 12,
+   "day": 22,
+   "description": "Kỷ niệm ngày thành lập Quân đội Nhân dân Việt Nam (22/12/1944)."
+  },
+  {
+   "id": "giang-sinh",
+   "name": "Lễ Giáng sinh",
+   "category": "OBSERVANCE",
+   "calendar": "SOLAR",
+   "month": 12,
+   "day": 25,
+   "description": "Lễ Giáng sinh (Noel)."
+  },
+  {
+   "id": "tet-nguyen-dan",
+   "name": "Tết Nguyên Đán",
+   "category": "PUBLIC_HOLIDAY",
+   "calendar": "LUNAR",
+   "month": 1,
+   "day": 1,
+   "description": "Tết cổ truyền của dân tộc, dịp sum họp gia đình, chúc Tết, mừng tuổi. Lịch nghỉ chính thức được công bố theo từng năm.",
+   "durationDays": 3
+  },
+  {
+   "id": "ram-thang-gieng",
+   "name": "Tết Nguyên Tiêu (Rằm tháng Giêng)",
+   "category": "TRADITIONAL",
+   "calendar": "LUNAR",
+   "month": 1,
+   "day": 15,
+   "description": "\"Lễ Phật quanh năm không bằng rằm tháng Giêng\" – ngày rằm lớn đầu tiên của năm."
+  },
+  {
+   "id": "han-thuc",
+   "name": "Tết Hàn thực",
+   "category": "TRADITIONAL",
+   "calendar": "LUNAR",
+   "month": 3,
+   "day": 3,
+   "description": "Ngày làm bánh trôi, bánh chay dâng lên tổ tiên."
+  },
+  {
+   "id": "gio-to-hung-vuong",
+   "name": "Giỗ Tổ Hùng Vương",
+   "category": "PUBLIC_HOLIDAY",
+   "calendar": "LUNAR",
+   "month": 3,
+   "day": 10,
+   "description": "\"Dù ai đi ngược về xuôi, nhớ ngày Giỗ Tổ mùng mười tháng ba.\" Người lao động được nghỉ 1 ngày.",
+   "sinceYear": 2007
+  },
+  {
+   "id": "phat-dan",
+   "name": "Lễ Phật đản",
+   "category": "TRADITIONAL",
+   "calendar": "LUNAR",
+   "month": 4,
+   "day": 15,
+   "description": "Kỷ niệm ngày đản sinh của Đức Phật."
+  },
+  {
+   "id": "doan-ngo",
+   "name": "Tết Đoan Ngọ",
+   "category": "TRADITIONAL",
+   "calendar": "LUNAR",
+   "month": 5,
+   "day": 5,
+   "description": "Tết \"diệt sâu bọ\", ăn cơm rượu nếp, hoa quả đầu mùa."
+  },
+  {
+   "id": "vu-lan",
+   "name": "Lễ Vu Lan",
+   "category": "TRADITIONAL",
+   "calendar": "LUNAR",
+   "month": 7,
+   "day": 15,
+   "description": "Mùa báo hiếu cha mẹ, cài hoa hồng lên áo."
+  },
+  {
+   "id": "trung-thu",
+   "name": "Tết Trung Thu",
+   "category": "TRADITIONAL",
+   "calendar": "LUNAR",
+   "month": 8,
+   "day": 15,
+   "description": "Tết thiếu nhi, rước đèn ông sao, phá cỗ trông trăng."
+  },
+  {
+   "id": "ha-nguyen",
+   "name": "Tết Hạ Nguyên (Rằm tháng Mười)",
+   "category": "TRADITIONAL",
+   "calendar": "LUNAR",
+   "month": 10,
+   "day": 15,
+   "description": "Tết cơm mới, mừng vụ mùa bội thu."
+  },
+  {
+   "id": "ong-cong-ong-tao",
+   "name": "Ông Công Ông Táo",
+   "category": "TRADITIONAL",
+   "calendar": "LUNAR",
+   "month": 12,
+   "day": 23,
+   "description": "Tiễn ông Táo về trời, thả cá chép."
+  },
+  {
+   "id": "giao-thua",
+   "name": "Đêm Giao thừa",
+   "category": "TRADITIONAL",
+   "calendar": "LUNAR",
+   "month": 12,
+   "day": 0,
+   "description": "Khoảnh khắc chuyển giao năm cũ sang năm mới.",
+   "lastDayOfMonth": true
+  }
+ ]
+}

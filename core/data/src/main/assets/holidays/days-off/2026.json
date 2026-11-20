@@ -1,0 +1,31 @@
+{
+  "year": 2026,
+  "entries": [
+    {
+      "from": "2026-02-14",
+      "to": "2026-02-22",
+      "kind": "DAY_OFF",
+      "reason": "Nghỉ Tết Nguyên Đán Bính Ngọ (5 ngày Tết và 4 ngày nghỉ hằng tuần)",
+      "source": "Thông báo 9441/TB-BNV năm 2025 của Bộ Nội vụ"
+    },
+    {
+      "from": "2026-04-27",
+      "kind": "DAY_OFF",
+      "reason": "Nghỉ bù Giỗ Tổ Hùng Vương (10/3 âm lịch rơi vào Chủ nhật 26/4)",
+      "source": "Bộ luật Lao động 2019, Điều 111–112; Công văn 3383/BNV-CVL năm 2026"
+    },
+    {
+      "from": "2026-08-22",
+      "kind": "MAKE_UP_WORKDAY",
+      "reason": "Làm bù cho ngày thứ Hai 31/8 được hoán đổi dịp Quốc khánh",
+      "source": "Thông báo 9441/TB-BNV năm 2025 của Bộ Nội vụ"
+    },
+    {
+      "from": "2026-08-31",
+      "to": "2026-09-02",
+      "kind": "DAY_OFF",
+      "reason": "Nghỉ Quốc khánh (2 ngày lễ và 1 ngày hoán đổi)",
+      "source": "Thông báo 9441/TB-BNV năm 2025 của Bộ Nội vụ"
+    }
+  ]
+}

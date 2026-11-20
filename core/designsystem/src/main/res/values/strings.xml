@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Indexed by DayOfWeek.value - 1 (Monday first) -->
+    <string-array name="weekday_full">
+        <item>Thứ Hai</item>
+        <item>Thứ Ba</item>
+        <item>Thứ Tư</item>
+        <item>Thứ Năm</item>
+        <item>Thứ Sáu</item>
+        <item>Thứ Bảy</item>
+        <item>Chủ Nhật</item>
+    </string-array>
+    <string-array name="weekday_short">
+        <item>T2</item>
+        <item>T3</item>
+        <item>T4</item>
+        <item>T5</item>
+        <item>T6</item>
+        <item>T7</item>
+        <item>CN</item>
+    </string-array>
+    <string-array name="month_names">
+        <item>Tháng Một</item>
+        <item>Tháng Hai</item>
+        <item>Tháng Ba</item>
+        <item>Tháng Tư</item>
+        <item>Tháng Năm</item>
+        <item>Tháng Sáu</item>
+        <item>Tháng Bảy</item>
+        <item>Tháng Tám</item>
+        <item>Tháng Chín</item>
+        <item>Tháng Mười</item>
+        <item>Tháng Mười Một</item>
+        <item>Tháng Mười Hai</item>
+    </string-array>
+    <string-array name="lunar_month_names">
+        <item>Giêng</item>
+        <item>Hai</item>
+        <item>Ba</item>
+        <item>Tư</item>
+        <item>Năm</item>
+        <item>Sáu</item>
+        <item>Bảy</item>
+        <item>Tám</item>
+        <item>Chín</item>
+        <item>Mười</item>
+        <item>Mười Một</item>
+        <item>Chạp</item>
+    </string-array>
+
+    <string name="month_year">Tháng %1$d, %2$d</string>
+    <string name="month_year_short">%1$02d/%2$d</string>
+    <string name="solar_date">%1$02d/%2$02d/%3$d</string>
+    <string name="lunar_month">Tháng %1$s</string>
+    <string name="lunar_month_leap">Tháng %1$s nhuận</string>
+    <string name="lunar_month_full">Đủ</string>
+    <string name="lunar_month_short">Thiếu</string>
+    <string name="lunar_year">Năm %1$s</string>
+    <string name="lunar_day_month">%1$d/%2$d</string>
+    <string name="lunar_date_long">%1$d tháng %2$s năm %3$s</string>
+    <string name="lunar_date_long_leap">%1$d tháng %2$s nhuận năm %3$s</string>
+    <string name="can_chi_day">Ngày %1$s</string>
+    <string name="can_chi_month">Tháng %1$s</string>
+    <string name="can_chi_year">Năm %1$s</string>
+
+    <string name="nav_today">Hôm nay</string>
+    <string name="nav_month">Tháng</string>
+    <string name="nav_holidays">Ngày lễ</string>
+    <string name="nav_settings">Cài đặt</string>
+
+    <string name="action_add_event">Thêm sự kiện</string>
+    <string name="action_today">Hôm nay</string>
+    <string name="action_previous_day">Ngày trước</string>
+    <string name="action_next_day">Ngày sau</string>
+    <string name="action_previous_month">Tháng trước</string>
+    <string name="action_next_month">Tháng sau</string>
+    <string name="action_close">Đóng</string>
+    <string name="action_save">Lưu</string>
+    <string name="action_cancel">Hủy</string>
+    <string name="action_delete">Xóa</string>
+    <string name="action_edit">Sửa</string>
+    <string name="action_back">Quay lại</string>
+    <string name="action_retry">Thử lại</string>
+
+    <string name="event_color_lacquer">Sơn mài</string>
+    <string name="event_color_rice">Lúa non</string>
+    <string name="event_color_apricot">Hoa mai</string>
+    <string name="event_color_river">Sông nước</string>
+    <string name="event_color_lotus">Hoa sen</string>
+    <string name="event_color_ink">Mực tàu</string>
+
+    <string name="reminder_at_start">Lúc bắt đầu</string>
+    <string name="reminder_minutes">Trước %1$d phút</string>
+    <string name="reminder_hours">Trước %1$d giờ</string>
+    <string name="reminder_days">Trước %1$d ngày</string>
+    <string name="reminder_all_day_same_day">%1$s cùng ngày</string>
+    <string name="reminder_all_day_days_before">%1$s, %2$d ngày trước</string>
+    <string name="reminder_none">Không nhắc</string>
+
+    <string name="all_day">Cả ngày</string>
+    <string name="time_range">%1$s – %2$s</string>
+
+    <string name="holiday_category_public">Nghỉ lễ chính thức</string>
+    <string name="holiday_category_traditional">Lễ truyền thống</string>
+    <string name="holiday_category_observance">Ngày kỷ niệm</string>
+    <string name="holiday_day_index">%1$s (ngày %2$d)</string>
+    <string name="day_off_official">Nghỉ lễ</string>
+    <string name="make_up_workday">Đi làm bù</string>
+
+    <string name="image_credit">Ảnh: %1$s · %2$s</string>
+    <string name="loading">Đang tải…</string>
+    <string name="error_generic">Đã có lỗi xảy ra. Vui lòng thử lại.</string>
+</resources>

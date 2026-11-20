@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="events_new_title">Sự kiện mới</string>
+    <string name="events_edit_title">Sửa sự kiện</string>
+    <string name="events_field_title">Tiêu đề</string>
+    <string name="events_field_title_placeholder">Bạn định làm gì?</string>
+    <string name="events_field_location">Địa điểm</string>
+    <string name="events_field_note">Ghi chú</string>
+    <string name="events_all_day">Cả ngày</string>
+    <string name="events_starts">Bắt đầu</string>
+    <string name="events_ends">Kết thúc</string>
+    <string name="events_repeat">Lặp lại</string>
+    <string name="events_repeat_until">Lặp đến ngày</string>
+    <string name="events_repeat_forever">Không giới hạn</string>
+    <string name="events_repeat_until_value">Đến %1$s</string>
+    <string name="events_reminders">Nhắc nhở</string>
+    <string name="events_reminder_add_custom">Tùy chỉnh…</string>
+    <string name="events_color">Màu</string>
+    <string name="events_more_details">Thêm địa điểm, ghi chú</string>
+    <string name="events_lunar_hint">Âm lịch: %1$s</string>
+
+    <string name="events_repeat_none">Không lặp lại</string>
+    <string name="events_repeat_daily">Hằng ngày</string>
+    <string name="events_repeat_weekly">Hằng tuần vào %1$s</string>
+    <string name="events_repeat_monthly">Hằng tháng vào ngày %1$d</string>
+    <string name="events_repeat_yearly">Hằng năm vào %1$s</string>
+    <string name="events_repeat_lunar_monthly">Hằng tháng âm lịch, ngày %1$d</string>
+    <string name="events_repeat_lunar_yearly">Hằng năm âm lịch, ngày %1$s</string>
+    <string name="events_repeat_lunar_hint">Phù hợp ngày giỗ, sinh nhật âm lịch, mùng 1 và rằm.</string>
+
+    <string name="events_error_end_before_start">Thời gian kết thúc phải sau thời gian bắt đầu.</string>
+    <string name="events_error_until">Ngày kết thúc lặp phải sau ngày bắt đầu.</string>
+    <string name="events_error_save">Không lưu được sự kiện. Vui lòng thử lại.</string>
+    <string name="events_untitled">(Không có tiêu đề)</string>
+    <string name="events_discard_title">Bỏ thay đổi?</string>
+    <string name="events_discard_message">Những gì bạn vừa nhập sẽ không được lưu.</string>
+    <string name="events_discard_confirm">Bỏ</string>
+    <string name="events_keep_editing">Tiếp tục sửa</string>
+
+    <string name="events_custom_reminder_title">Nhắc trước</string>
+    <string name="events_unit_minutes">phút</string>
+    <string name="events_unit_hours">giờ</string>
+    <string name="events_unit_days">ngày</string>
+
+    <string name="events_detail_not_found">Sự kiện này không còn tồn tại.</string>
+    <string name="events_delete_title">Xóa sự kiện?</string>
+    <string name="events_delete_message">Sự kiện và các lời nhắc của nó sẽ bị xóa.</string>
+    <string name="events_delete_recurring_title">Xóa sự kiện lặp lại</string>
+    <string name="events_delete_this">Chỉ sự kiện này</string>
+    <string name="events_delete_all">Tất cả sự kiện trong chuỗi</string>
+    <string name="events_no_reminders">Không có nhắc nhở</string>
+    <string name="events_notification_rationale">Hãy cho phép thông báo để nhận lời nhắc sự kiện.</string>
+</resources>

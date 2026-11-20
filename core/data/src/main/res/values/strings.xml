@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reminder_channel_name">Nhắc nhở sự kiện</string>
+    <string name="reminder_channel_description">Thông báo trước khi sự kiện của bạn bắt đầu</string>
+    <string name="reminder_untitled">Sự kiện không tên</string>
+    <string name="reminder_action_snooze">Nhắc lại sau 10 phút</string>
+    <string name="reminder_today">hôm nay</string>
+    <string name="reminder_tomorrow">ngày mai</string>
+    <string name="reminder_all_day">Cả ngày, %1$s</string>
+    <string name="reminder_starting_now">Bắt đầu ngay bây giờ (%1$s)</string>
+    <string name="reminder_starts_at">Bắt đầu lúc %1$s, %2$s</string>
+</resources>

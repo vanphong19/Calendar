@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="settings_title">Cài đặt</string>
+    <string name="settings_section_appearance">Giao diện</string>
+    <string name="settings_theme">Chế độ hiển thị</string>
+    <string name="settings_theme_system">Theo hệ thống</string>
+    <string name="settings_theme_light">Sáng</string>
+    <string name="settings_theme_dark">Tối</string>
+    <string name="settings_dynamic_color">Màu theo hình nền</string>
+    <string name="settings_dynamic_color_summary">Dùng bảng màu Material You của thiết bị. Ngày Chủ nhật và ngày lễ vẫn giữ màu đỏ truyền thống.</string>
+
+    <string name="settings_section_calendar">Lịch</string>
+    <string name="settings_show_lunar">Hiển thị âm lịch</string>
+    <string name="settings_show_lunar_summary">Ngày âm, can chi, tiết khí và giờ hoàng đạo</string>
+    <string name="settings_first_day">Ngày đầu tuần</string>
+
+    <string name="settings_section_holidays">Ngày lễ</string>
+    <string name="settings_show_holidays">Hiển thị ngày lễ</string>
+
+    <string name="settings_section_reminders">Nhắc nhở</string>
+    <string name="settings_default_reminder">Nhắc mặc định cho sự kiện có giờ</string>
+    <string name="settings_default_all_day_reminder">Nhắc mặc định cho sự kiện cả ngày</string>
+    <string name="settings_notifications">Quyền thông báo</string>
+    <string name="settings_notifications_on">Đã cho phép</string>
+    <string name="settings_notifications_off">Chưa cho phép – chạm để mở cài đặt</string>
+    <string name="settings_exact_alarm">Nhắc đúng giờ chính xác</string>
+    <string name="settings_exact_alarm_on">Đang bật – lời nhắc hiện đúng phút đã hẹn</string>
+    <string name="settings_exact_alarm_off">Đang tắt – lời nhắc có thể trễ vài phút. Chạm để bật.</string>
+
+    <string name="settings_section_images">Ảnh mỗi ngày</string>
+    <string name="settings_daily_images">Hiển thị ảnh trên tờ lịch</string>
+    <string name="settings_wifi_only">Chỉ tải ảnh qua Wi-Fi</string>
+    <string name="settings_wifi_only_summary">Khi dùng dữ liệu di động, ứng dụng dùng ảnh có sẵn trong máy.</string>
+    <string name="settings_clear_cache">Xóa ảnh đã lưu tạm</string>
+    <string name="settings_clear_cache_done">Đã xóa ảnh lưu tạm</string>
+
+    <string name="settings_section_about">Thông tin</string>
+    <string name="settings_version">Phiên bản %1$s</string>
+    <string name="settings_licenses">Giấy phép</string>
+    <string name="settings_licenses_summary">Ảnh từ Wikimedia Commons theo giấy phép CC0, CC BY, CC BY-SA hoặc phạm vi công cộng; tác giả và giấy phép của từng ảnh có trong phần chi tiết ngày. Phông chữ Be Vietnam Pro theo SIL Open Font License 1.1. Dữ liệu âm lịch được tính bằng thuật toán thiên văn theo múi giờ Việt Nam (UTC+7).</string>
+    <string name="settings_holiday_data_note">Lịch nghỉ bù chỉ được cập nhật theo thông báo chính thức của cơ quan nhà nước.</string>
+</resources>

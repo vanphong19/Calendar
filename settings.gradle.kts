@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google {
             content {
@@ -24,3 +25,12 @@ dependencyResolutionManagement {
 
 rootProject.name = "Calendar"
 include(":app")
+include(":core:lunar")
+include(":core:model")
+include(":core:domain")
+include(":core:data")
+include(":core:designsystem")
+include(":feature:calendar")
+include(":feature:events")
+include(":feature:holidays")
+include(":feature:settings")

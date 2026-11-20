@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="calendar_lunar_label">Âm lịch</string>
+    <string name="calendar_solar_term">Tiết %1$s</string>
+    <string name="calendar_solar_term_starts">Bắt đầu tiết %1$s</string>
+    <string name="calendar_auspicious_hours">Giờ hoàng đạo</string>
+    <string name="calendar_auspicious_hour_range">%1$s (%2$d–%3$d)</string>
+    <string name="calendar_events_more">+%1$d sự kiện khác</string>
+    <string name="calendar_day_details">Xem chi tiết ngày</string>
+    <string name="calendar_pick_date">Chọn ngày</string>
+    <string name="calendar_pick_month">Chọn tháng</string>
+    <string name="calendar_tet_day">Mùng %1$d Tết</string>
+    <string name="calendar_day_off">Ngày nghỉ lễ</string>
+    <string name="calendar_make_up_day">Ngày làm bù</string>
+
+    <string name="calendar_sheet_events">Lịch trình</string>
+    <string name="calendar_sheet_holidays">Ngày lễ &amp; kỷ niệm</string>
+    <string name="calendar_sheet_image">Về bức ảnh</string>
+    <string name="calendar_sheet_saying">Lời hay mỗi ngày</string>
+    <string name="calendar_sheet_lunar">Thông tin âm lịch</string>
+    <string name="calendar_sheet_image_source">Xem nguồn ảnh</string>
+    <string name="calendar_empty_title">Ngày này còn trống</string>
+    <string name="calendar_empty_message">Thêm một lịch hẹn hay lời nhắc để không bỏ lỡ điều quan trọng.</string>
+
+    <string name="calendar_mode_month">Tháng</string>
+    <string name="calendar_mode_week">Tuần</string>
+    <string name="calendar_mode_agenda">Lịch trình</string>
+    <string name="calendar_open_page">Xem tờ lịch</string>
+    <string name="calendar_agenda_empty_title">Chưa có lịch trình</string>
+    <string name="calendar_agenda_empty_message">Các sự kiện và ngày lễ sắp tới sẽ hiện ở đây.</string>
+    <string name="calendar_agenda_load_more">Xem thêm</string>
+    <string name="calendar_week_title">Tuần %1$s – %2$s</string>
+
+    <!-- Accessibility -->
+    <string name="calendar_cd_day">%1$s, %2$s, âm lịch %3$s</string>
+    <string name="calendar_cd_today">hôm nay</string>
+    <string name="calendar_cd_events">%1$d sự kiện</string>
+    <string name="calendar_cd_tear_hint">Vuốt sang trái để xé tờ lịch, sang phải để xem ngày trước</string>
+</resources>
