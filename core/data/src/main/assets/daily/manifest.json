@@ -3079,12 +3079,7 @@
    "title": "Chuẩn bị gói bánh chưng",
    "caption": "Lá dong, gạo nếp, đỗ xanh và thịt lợn được chuẩn bị chu đáo. Bánh chưng vuông tượng trưng cho đất, gắn với truyền thuyết Lang Liêu.",
    "province": null,
-   "image": "nguyen-lieu-banh-chung-f842",
-   "saying": {
-    "text": "Thịt mỡ, dưa hành, câu đối đỏ\nCây nêu, tràng pháo, bánh chưng xanh.",
-    "source": "Câu đối Tết",
-    "note": "Những hình ảnh quen thuộc làm nên không khí Tết cổ truyền."
-   }
+   "image": "nguyen-lieu-banh-chung-f842"
   },
   "01-27": {
    "title": "Quây quần gói bánh chưng",
@@ -4241,12 +4236,7 @@
    "title": "Đồng sen Tam Cốc",
    "caption": "Tháng Bảy, cánh đồng sen dưới chân núi Tam Cốc nở rộ. Sen là loài hoa “gần bùn mà chẳng hôi tanh mùi bùn”.",
    "province": "Ninh Bình",
-   "image": "rice-plantation-in-tam-coc-august-2023-d8c5",
-   "saying": {
-    "text": "Trong đầm gì đẹp bằng sen\nLá xanh bông trắng lại chen nhị vàng.\nNhị vàng bông trắng lá xanh\nGần bùn mà chẳng hôi tanh mùi bùn.",
-    "source": "Ca dao",
-    "note": "Ca ngợi vẻ đẹp và phẩm chất thanh cao của hoa sen, như người sống trong sạch giữa đời."
-   }
+   "image": "rice-plantation-in-tam-coc-august-2023-d8c5"
   },
   "08-01": {
    "title": "Đèn lồng phố Hội",
@@ -4550,12 +4540,7 @@
    "title": "Đêm rằm Hội An",
    "caption": "Những ngọn đèn hoa đăng trôi trên sông Hoài trong đêm rằm. Vào ngày rằm, phố cổ Hội An tắt đèn điện, chỉ còn ánh đèn lồng và nến.",
    "province": "Đà Nẵng",
-   "image": "hoi-an-full-moon-festival-d099",
-   "saying": {
-    "text": "Muốn ăn lúa tháng năm\nThì trông trăng rằm tháng tám.",
-    "source": "Tục ngữ",
-    "note": "Nhìn trăng rằm tháng tám có thể đoán được mùa lúa tháng năm năm sau."
-   }
+   "image": "hoi-an-full-moon-festival-d099"
   },
   "09-19": {
    "title": "Góc phố Hàng Mã",
@@ -5231,9 +5216,9 @@
    "province": "Hà Nội",
    "image": "newone-chieu-he-ho-tay-01-2f25",
    "saying": {
-    "text": "Đói lòng ăn nửa trái sim\nUống lưng bát nước đi tìm người thương.",
-    "source": "Ca dao",
-    "note": "Tình yêu chân thành vượt qua mọi thiếu thốn, gian khổ."
+    "text": "Thuận vợ thuận chồng, tát biển Đông cũng cạn.",
+    "source": "Tục ngữ",
+    "note": "Vợ chồng đồng lòng thì việc khó mấy cũng làm được."
    }
   },
   "thay-thuoc": {
@@ -5297,9 +5282,9 @@
    "province": "Điện Biên",
    "image": "dien-bien-phu2-4a2c",
    "saying": {
-    "text": "Giặc đến nhà, đàn bà cũng đánh.",
-    "source": "Tục ngữ",
-    "note": "Khi đất nước bị xâm lăng, ai cũng đứng lên chống giặc."
+    "text": "Một cây làm chẳng nên non\nBa cây chụm lại nên hòn núi cao.",
+    "source": "Ca dao",
+    "note": "Đoàn kết thì tạo nên sức mạnh lớn; một mình khó làm nên việc."
    }
   },
   "sinh-nhat-bac": {
@@ -5308,9 +5293,9 @@
    "province": "Hà Nội",
    "image": "carp-pond-in-the-presidential-palace-gardens-e868",
    "saying": {
-    "text": "Uống nước nhớ nguồn.",
+    "text": "Ăn quả nhớ kẻ trồng cây.",
     "source": "Tục ngữ",
-    "note": "Hưởng thành quả thì phải nhớ ơn người đã gây dựng nên."
+    "note": "Biết ơn những người đã làm ra thành quả mình đang hưởng."
    }
   },
   "quoc-te-thieu-nhi": {
@@ -5407,9 +5392,9 @@
    "province": "Hà Nội",
    "image": "le-ruoc-cua-1-dong-ho-trong-le-hoi-cau-dao-n-1878",
    "saying": {
-    "text": "Mẹ già như chuối ba hương\nNhư xôi nếp một, như đường mía lau.",
-    "source": "Ca dao",
-    "note": "Mẹ già quý giá, ngọt ngào như những thứ ngon nhất của làng quê."
+    "text": "Giặc đến nhà, đàn bà cũng đánh.",
+    "source": "Tục ngữ",
+    "note": "Truyền thống anh hùng, bất khuất của phụ nữ Việt Nam: khi Tổ quốc lâm nguy, người phụ nữ cũng sẵn sàng đứng lên giữ nước."
    }
   },
   "nha-giao": {
@@ -5429,9 +5414,9 @@
    "province": "Hà Nội",
    "image": "vietnam-military-history-museum-12036316176-5efd",
    "saying": {
-    "text": "Giặc đến nhà, đàn bà cũng đánh.",
+    "text": "Lửa thử vàng, gian nan thử sức.",
     "source": "Tục ngữ",
-    "note": "Khi đất nước bị xâm lăng, ai cũng đứng lên chống giặc."
+    "note": "Khó khăn là thước đo bản lĩnh của con người."
    }
   },
   "giang-sinh": {
@@ -5446,9 +5431,9 @@
    "province": null,
    "image": "hoa-dao-5afb",
    "saying": {
-    "text": "Thịt mỡ, dưa hành, câu đối đỏ\nCây nêu, tràng pháo, bánh chưng xanh.",
-    "source": "Câu đối Tết",
-    "note": "Những hình ảnh quen thuộc làm nên không khí Tết cổ truyền."
+    "text": "Mồng một Tết cha, mồng hai Tết mẹ, mồng ba Tết thầy.",
+    "source": "Tục ngữ",
+    "note": "Nếp chúc Tết truyền thống: ngày đầu bên nội, ngày hai bên ngoại, ngày ba thăm thầy."
    }
   },
   "ram-thang-gieng": {
@@ -5457,9 +5442,9 @@
    "province": "Hà Nội",
    "image": "temple-of-literature-14747417311-e5e5",
    "saying": {
-    "text": "Có thờ có thiêng, có kiêng có lành.",
-    "source": "Tục ngữ",
-    "note": "Giữ lòng thành kính và biết kiêng cữ thì được bình an."
+    "text": "Tháng giêng là tháng ăn chơi\nTháng hai trồng đậu, trồng khoai, trồng cà.",
+    "source": "Ca dao",
+    "note": "Nhịp mùa vụ của nhà nông: vui Tết tháng giêng rồi bắt tay ngay vào cấy trồng."
    }
   },
   "han-thuc": {
@@ -5523,9 +5508,9 @@
    "province": null,
    "image": "co-trung-thu-3898",
    "saying": {
-    "text": "Mười rằm trăng náu, mười sáu trăng treo.",
+    "text": "Muốn ăn lúa tháng năm\nThì trông trăng rằm tháng tám.",
     "source": "Tục ngữ",
-    "note": "Trăng ngày rằm mọc lúc vừa tối, đến ngày mười sáu thì trăng lên muộn và treo cao."
+    "note": "Nhìn trăng rằm tháng tám có thể đoán được mùa lúa tháng năm năm sau."
    }
   },
   "ha-nguyen": {
@@ -5556,9 +5541,9 @@
    "province": "Hà Nội",
    "image": "phao-hoa-ha-noi-ban-dem-40d8",
    "saying": {
-    "text": "Mồng một Tết cha, mồng hai Tết mẹ, mồng ba Tết thầy.",
-    "source": "Tục ngữ",
-    "note": "Nếp chúc Tết truyền thống: ngày đầu bên nội, ngày hai bên ngoại, ngày ba thăm thầy."
+    "text": "Thịt mỡ, dưa hành, câu đối đỏ\nCây nêu, tràng pháo, bánh chưng xanh.",
+    "source": "Câu đối Tết",
+    "note": "Những hình ảnh quen thuộc làm nên không khí Tết cổ truyền."
    }
   },
   "van-hoa-viet-nam": {
@@ -5567,9 +5552,9 @@
    "province": "Huế",
    "image": "nha-nhac-cung-dinh-hue-b5f0",
    "saying": {
-    "text": "Gió đưa cành trúc la đà, tiếng chuông Trấn Vũ canh gà Thọ Xương",
+    "text": "Ta về ta tắm ao ta\nDù trong dù đục ao nhà vẫn hơn.",
     "source": "Ca dao",
-    "note": "Câu ca dao vẽ nên vẻ đẹp văn hóa Thăng Long: tiếng chuông chùa, tiếng gà gáy sớm hòa trong cảnh làng quê ven đô."
+    "note": "Trân trọng những giá trị của quê hương, của văn hóa nhà mình: dù giản dị vẫn là điều đáng gìn giữ nhất."
    }
   }
  },
@@ -5751,7 +5736,14 @@
   {
    "text": "Cày đồng đang buổi ban trưa\nMồ hôi thánh thót như mưa ruộng cày.",
    "source": "Ca dao",
-   "note": "Nói lên nỗi vất vả của người làm ruộng giữa nắng trưa."
+   "note": "Nói lên nỗi vất vả của người làm ruộng giữa nắng trưa.",
+   "lunarMonths": [
+    4,
+    5,
+    6,
+    7,
+    8
+   ]
   },
   {
    "text": "Tấc đất tấc vàng.",
@@ -5771,52 +5763,107 @@
   {
    "text": "Trời nắng tốt dưa, trời mưa tốt lúa.",
    "source": "Tục ngữ",
-   "note": "Kinh nghiệm nhà nông: nắng hợp với dưa, mưa hợp với lúa."
+   "note": "Kinh nghiệm nhà nông: nắng hợp với dưa, mưa hợp với lúa.",
+   "lunarMonths": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
   },
   {
    "text": "Chuồn chuồn bay thấp thì mưa\nBay cao thì nắng, bay vừa thì râm.",
    "source": "Ca dao",
-   "note": "Kinh nghiệm dự đoán thời tiết qua cách chuồn chuồn bay."
+   "note": "Kinh nghiệm dự đoán thời tiết qua cách chuồn chuồn bay.",
+   "lunarMonths": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
   },
   {
    "text": "Ráng mỡ gà, có nhà thì giữ.",
    "source": "Tục ngữ",
-   "note": "Trời có ráng vàng như mỡ gà là dấu hiệu sắp có bão, phải chằng chống nhà cửa."
+   "note": "Trời có ráng vàng như mỡ gà là dấu hiệu sắp có bão, phải chằng chống nhà cửa.",
+   "lunarMonths": [
+    6,
+    7,
+    8,
+    9,
+    10
+   ]
   },
   {
    "text": "Tháng bảy kiến bò, chỉ lo lại lụt.",
    "source": "Tục ngữ",
-   "note": "Tháng bảy âm lịch thấy kiến bò lên cao là dấu hiệu sắp có lũ lụt."
+   "note": "Tháng bảy âm lịch thấy kiến bò lên cao là dấu hiệu sắp có lũ lụt.",
+   "lunarMonths": [
+    7
+   ]
   },
   {
    "text": "Mau sao thì nắng, vắng sao thì mưa.",
    "source": "Tục ngữ",
-   "note": "Đêm nhiều sao thì hôm sau nắng, ít sao thì dễ mưa."
+   "note": "Đêm nhiều sao thì hôm sau nắng, ít sao thì dễ mưa.",
+   "lunarMonths": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
   },
   {
    "text": "Đêm tháng năm chưa nằm đã sáng\nNgày tháng mười chưa cười đã tối.",
    "source": "Tục ngữ",
-   "note": "Mùa hè đêm ngắn ngày dài, mùa đông ngày ngắn đêm dài."
+   "note": "Mùa hè đêm ngắn ngày dài, mùa đông ngày ngắn đêm dài.",
+   "lunarMonths": [
+    5,
+    10
+   ]
   },
   {
    "text": "Tháng giêng là tháng ăn chơi\nTháng hai trồng đậu, trồng khoai, trồng cà.",
    "source": "Ca dao",
-   "note": "Nhịp mùa vụ của nhà nông: vui Tết tháng giêng rồi bắt tay ngay vào cấy trồng."
+   "note": "Nhịp mùa vụ của nhà nông: vui Tết tháng giêng rồi bắt tay ngay vào cấy trồng.",
+   "lunarMonths": [
+    1,
+    2
+   ]
   },
   {
    "text": "Tháng chạp là tháng trồng khoai\nTháng giêng trồng đậu, tháng hai trồng cà.",
    "source": "Ca dao",
-   "note": "Lịch gieo trồng theo tháng của người nông dân Bắc Bộ."
+   "note": "Lịch gieo trồng theo tháng của người nông dân Bắc Bộ.",
+   "lunarMonths": [
+    12,
+    1
+   ]
   },
   {
    "text": "Gió heo may, chuồn chuồn bay thì bão.",
    "source": "Tục ngữ",
-   "note": "Gió heo may về kèm chuồn chuồn bay nhiều là dấu hiệu có bão."
+   "note": "Gió heo may về kèm chuồn chuồn bay nhiều là dấu hiệu có bão.",
+   "lunarMonths": [
+    7,
+    8,
+    9
+   ]
   },
   {
    "text": "Được mùa lúa, úa mùa cau.",
    "source": "Tục ngữ",
-   "note": "Năm lúa được mùa thì cau thường kém, ít khi được cả hai."
+   "note": "Năm lúa được mùa thì cau thường kém, ít khi được cả hai.",
+   "lunarMonths": [
+    5,
+    10
+   ]
   },
   {
    "text": "Nhất thì, nhì thục.",
@@ -5826,7 +5873,11 @@
   {
    "text": "Lúa chiêm lấp ló đầu bờ\nHễ nghe tiếng sấm phất cờ mà lên.",
    "source": "Ca dao",
-   "note": "Lúa chiêm gặp mưa giông đầu mùa thì lớn nhanh, trổ bông mạnh."
+   "note": "Lúa chiêm gặp mưa giông đầu mùa thì lớn nhanh, trổ bông mạnh.",
+   "lunarMonths": [
+    2,
+    3
+   ]
   },
   {
    "text": "Cơm cha áo mẹ chữ thầy\nGắng công mà học có ngày thành danh.",
@@ -5964,11 +6015,6 @@
    "note": "Thất bại thì rút kinh nghiệm, làm lại chứ không nản chí."
   },
   {
-   "text": "Thất bại là mẹ thành công.",
-   "source": "Tục ngữ",
-   "note": "Thất bại cho ta bài học để đi tới thành công."
-  },
-  {
    "text": "Ai ơi đã quyết thì hành\nĐã đan thì lận tròn vành mới thôi.",
    "source": "Ca dao",
    "note": "Đã quyết làm việc gì thì phải làm đến nơi đến chốn."
@@ -6061,7 +6107,10 @@
   {
    "text": "Dù ai đi ngược về xuôi\nNhớ ngày giỗ Tổ mùng mười tháng ba.",
    "source": "Ca dao",
-   "note": "Nhắc mọi người con đất Việt nhớ ngày Giỗ Tổ Hùng Vương, nhớ cội nguồn dân tộc."
+   "note": "Nhắc mọi người con đất Việt nhớ ngày Giỗ Tổ Hùng Vương, nhớ cội nguồn dân tộc.",
+   "lunarMonths": [
+    3
+   ]
   },
   {
    "text": "Chim có tổ, người có tông.",
@@ -6101,7 +6150,10 @@
   {
    "text": "Dù ai buôn đâu bán đâu\nMồng mười tháng tám chọi trâu thì về.",
    "source": "Ca dao",
-   "note": "Nhắc người Đồ Sơn về quê dự hội chọi trâu truyền thống."
+   "note": "Nhắc người Đồ Sơn về quê dự hội chọi trâu truyền thống.",
+   "lunarMonths": [
+    8
+   ]
   },
   {
    "text": "Đồng Đăng có phố Kỳ Lừa\nCó nàng Tô Thị, có chùa Tam Thanh.",
@@ -6186,22 +6238,12 @@
   {
    "text": "Trong đầm gì đẹp bằng sen\nLá xanh bông trắng lại chen nhị vàng.\nNhị vàng bông trắng lá xanh\nGần bùn mà chẳng hôi tanh mùi bùn.",
    "source": "Ca dao",
-   "note": "Ca ngợi vẻ đẹp và phẩm chất thanh cao của hoa sen, như người sống trong sạch giữa đời."
-  },
-  {
-   "text": "Thân em như tấm lụa đào\nPhất phơ giữa chợ biết vào tay ai.",
-   "source": "Ca dao",
-   "note": "Lời than của người phụ nữ xưa về số phận không tự mình quyết định."
-  },
-  {
-   "text": "Thân em như hạt mưa sa\nHạt vào đài các, hạt ra ruộng cày.",
-   "source": "Ca dao",
-   "note": "Số phận người phụ nữ xưa trôi nổi, không biết sẽ về đâu."
-  },
-  {
-   "text": "Thương thay thân phận con tằm\nKiếm ăn được mấy phải nằm nhả tơ.",
-   "source": "Ca dao",
-   "note": "Xót thương những người lao động vất vả mà hưởng chẳng bao nhiêu."
+   "note": "Ca ngợi vẻ đẹp và phẩm chất thanh cao của hoa sen, như người sống trong sạch giữa đời.",
+   "lunarMonths": [
+    4,
+    5,
+    6
+   ]
   },
   {
    "text": "Ngày nào em bé cỏn con\nBây giờ em đã lớn khôn thế này.\nCơm cha, áo mẹ, công thầy\nNghĩ sao cho bõ những ngày ước ao.",
@@ -6211,82 +6253,157 @@
   {
    "text": "Mồ hôi mà đổ xuống đồng\nLúa mọc trùng trùng sáng cả đồi nương.",
    "source": "Ca dao",
-   "note": "Công sức lao động sẽ đem lại mùa màng bội thu."
+   "note": "Công sức lao động sẽ đem lại mùa màng bội thu.",
+   "lunarMonths": [
+    2,
+    3,
+    6,
+    7
+   ]
   },
   {
    "text": "Rủ nhau đi cấy đi cày\nBây giờ khó nhọc có ngày phong lưu.",
    "source": "Ca dao",
-   "note": "Chịu khó lao động hôm nay thì mai sau sẽ đủ đầy."
+   "note": "Chịu khó lao động hôm nay thì mai sau sẽ đủ đầy.",
+   "lunarMonths": [
+    2,
+    3,
+    6,
+    7
+   ]
   },
   {
    "text": "Người ta đi cấy lấy công\nTôi nay đi cấy còn trông nhiều bề.",
    "source": "Ca dao",
-   "note": "Nỗi lo toan của người nông dân trước bao điều phụ thuộc vào trời đất."
+   "note": "Nỗi lo toan của người nông dân trước bao điều phụ thuộc vào trời đất.",
+   "lunarMonths": [
+    2,
+    3,
+    6,
+    7
+   ]
   },
   {
    "text": "Trông trời trông đất trông mây\nTrông mưa trông gió trông ngày trông đêm.",
    "source": "Ca dao",
-   "note": "Người làm ruộng luôn nơm nớp theo dõi thời tiết để giữ mùa màng."
+   "note": "Người làm ruộng luôn nơm nớp theo dõi thời tiết để giữ mùa màng.",
+   "lunarMonths": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
   },
   {
    "text": "Mùa hè đang nắng, cỏ gà trắng thì mưa.",
    "source": "Tục ngữ",
-   "note": "Kinh nghiệm dân gian: cỏ gà trổ bông trắng giữa mùa nắng báo hiệu sắp mưa."
+   "note": "Kinh nghiệm dân gian: cỏ gà trổ bông trắng giữa mùa nắng báo hiệu sắp mưa.",
+   "lunarMonths": [
+    4,
+    5,
+    6
+   ]
   },
   {
    "text": "Cơn đằng đông vừa trông vừa chạy\nCơn đằng nam vừa làm vừa chơi.",
    "source": "Ca dao",
-   "note": "Mây giông phía đông thì mưa ngay; mây phía nam thì còn lâu mới mưa."
+   "note": "Mây giông phía đông thì mưa ngay; mây phía nam thì còn lâu mới mưa.",
+   "lunarMonths": [
+    5,
+    6,
+    7,
+    8
+   ]
   },
   {
    "text": "Tháng ba cày vỡ ruộng ra\nTháng tư bắc mạ thuận hòa mọi nơi.",
    "source": "Ca dao",
-   "note": "Nhịp công việc nhà nông theo mùa: cày ải tháng ba, gieo mạ tháng tư."
+   "note": "Nhịp công việc nhà nông theo mùa: cày ải tháng ba, gieo mạ tháng tư.",
+   "lunarMonths": [
+    3,
+    4
+   ]
   },
   {
    "text": "Muốn ăn lúa tháng năm\nThì trông trăng rằm tháng tám.",
    "source": "Tục ngữ",
-   "note": "Nhìn trăng rằm tháng tám có thể đoán được mùa lúa tháng năm năm sau."
+   "note": "Nhìn trăng rằm tháng tám có thể đoán được mùa lúa tháng năm năm sau.",
+   "lunarMonths": [
+    8
+   ]
   },
   {
    "text": "Mồng chín tháng chín có mưa\nThì con sắm sửa cày bừa làm ăn.",
    "source": "Ca dao",
-   "note": "Mưa ngày mùng chín tháng chín báo hiệu mùa màng thuận lợi."
+   "note": "Mưa ngày mùng chín tháng chín báo hiệu mùa màng thuận lợi.",
+   "lunarMonths": [
+    9
+   ]
   },
   {
    "text": "Gió bấc hiu hiu, sếu kêu thì rét.",
    "source": "Tục ngữ",
-   "note": "Gió bấc thổi kèm tiếng chim sếu là dấu hiệu trời trở rét."
+   "note": "Gió bấc thổi kèm tiếng chim sếu là dấu hiệu trời trở rét.",
+   "lunarMonths": [
+    10,
+    11,
+    12
+   ]
   },
   {
    "text": "Tháng giêng rét đài, tháng hai rét lộc, tháng ba rét nàng Bân.",
    "source": "Tục ngữ",
-   "note": "Những đợt rét cuối mùa ở miền Bắc: rét đài hoa, rét lộc non và rét nàng Bân."
+   "note": "Những đợt rét cuối mùa ở miền Bắc: rét đài hoa, rét lộc non và rét nàng Bân.",
+   "lunarMonths": [
+    1,
+    2,
+    3
+   ]
   },
   {
    "text": "Tháng tư đong đậu nấu chè\nĂn Tết Đoan Ngọ trở về tháng năm.",
    "source": "Ca dao",
-   "note": "Nét sinh hoạt, ăn uống của người dân theo mùa tiết."
+   "note": "Nét sinh hoạt, ăn uống của người dân theo mùa tiết.",
+   "lunarMonths": [
+    4,
+    5
+   ]
   },
   {
    "text": "Tháng sáu buôn nhãn bán trâm\nTháng bảy hôm rằm xá tội vong nhân.",
    "source": "Ca dao",
-   "note": "Tháng sáu là mùa nhãn, rằm tháng bảy là lễ xá tội vong nhân."
+   "note": "Tháng sáu là mùa nhãn, rằm tháng bảy là lễ xá tội vong nhân.",
+   "lunarMonths": [
+    6,
+    7
+   ]
   },
   {
    "text": "Tháng bảy nước nhảy lên bờ.",
    "source": "Tục ngữ",
-   "note": "Tháng bảy âm lịch mưa lớn, nước dâng cao."
+   "note": "Tháng bảy âm lịch mưa lớn, nước dâng cao.",
+   "lunarMonths": [
+    7
+   ]
   },
   {
    "text": "Tháng tám nắng rám trái bưởi.",
    "source": "Tục ngữ",
-   "note": "Nắng tháng tám âm lịch đủ làm vỏ bưởi rám vàng, báo mùa bưởi chín."
+   "note": "Nắng tháng tám âm lịch đủ làm vỏ bưởi rám vàng, báo mùa bưởi chín.",
+   "lunarMonths": [
+    8
+   ]
   },
   {
    "text": "Tháng tám giỗ cha, tháng ba giỗ mẹ.",
    "source": "Tục ngữ",
-   "note": "Dân gian nhắc ngày hội Kiếp Bạc (giỗ Đức Thánh Trần) tháng tám và hội Phủ Giày (giỗ Mẫu Liễu Hạnh) tháng ba."
+   "note": "Dân gian nhắc ngày hội Kiếp Bạc (giỗ Đức Thánh Trần) tháng tám và hội Phủ Giày (giỗ Mẫu Liễu Hạnh) tháng ba.",
+   "lunarMonths": [
+    3,
+    8
+   ]
   },
   {
    "text": "Đói thì đầu gối phải bò.",
@@ -6374,11 +6491,6 @@
    "note": "Chịu khó vun trồng hôm nay thì mai sau sẽ được hưởng thành quả."
   },
   {
-   "text": "Ăn cháo đá bát.",
-   "source": "Tục ngữ",
-   "note": "Phê phán kẻ vô ơn, được giúp rồi quay lưng phụ bạc."
-  },
-  {
    "text": "Một con ngựa đau, cả tàu bỏ cỏ.",
    "source": "Tục ngữ",
    "note": "Một người gặp nạn, cả tập thể cùng lo lắng, chia sẻ."
@@ -6446,22 +6558,27 @@
   {
    "text": "Thịt mỡ, dưa hành, câu đối đỏ\nCây nêu, tràng pháo, bánh chưng xanh.",
    "source": "Câu đối Tết",
-   "note": "Những hình ảnh quen thuộc làm nên không khí Tết cổ truyền."
+   "note": "Những hình ảnh quen thuộc làm nên không khí Tết cổ truyền.",
+   "lunarMonths": [
+    12,
+    1
+   ]
   },
   {
    "text": "Mồng một Tết cha, mồng hai Tết mẹ, mồng ba Tết thầy.",
    "source": "Tục ngữ",
-   "note": "Nếp chúc Tết truyền thống: ngày đầu bên nội, ngày hai bên ngoại, ngày ba thăm thầy."
-  },
-  {
-   "text": "Tháng giêng ăn Tết ở nhà\nTháng hai cờ bạc, tháng ba hội hè.",
-   "source": "Ca dao",
-   "note": "Tả nếp vui chơi đầu năm của làng quê xưa, ngụ ý nhắc chớ ham chơi quá."
+   "note": "Nếp chúc Tết truyền thống: ngày đầu bên nội, ngày hai bên ngoại, ngày ba thăm thầy.",
+   "lunarMonths": [
+    1
+   ]
   },
   {
    "text": "Ai về Phú Thọ cùng ta\nVui ngày Giỗ Tổ tháng ba mùng mười.",
    "source": "Ca dao",
-   "note": "Lời rủ về Phú Thọ dự hội Đền Hùng, tưởng nhớ các Vua Hùng."
+   "note": "Lời rủ về Phú Thọ dự hội Đền Hùng, tưởng nhớ các Vua Hùng.",
+   "lunarMonths": [
+    3
+   ]
   },
   {
    "text": "Mười rằm trăng náu, mười sáu trăng treo.",
@@ -6471,12 +6588,19 @@
   {
    "text": "Tháng bảy mưa ngâu.",
    "source": "Tục ngữ",
-   "note": "Tháng bảy âm lịch thường có mưa dầm, gắn với tích Ngưu Lang Chức Nữ."
+   "note": "Tháng bảy âm lịch thường có mưa dầm, gắn với tích Ngưu Lang Chức Nữ.",
+   "lunarMonths": [
+    7
+   ]
   },
   {
    "text": "Tháng tám đói qua, tháng ba đói chết.",
    "source": "Tục ngữ",
-   "note": "Tháng ba là lúc giáp hạt, đói kém nhất trong năm của nhà nông xưa."
+   "note": "Tháng ba là lúc giáp hạt, đói kém nhất trong năm của nhà nông xưa.",
+   "lunarMonths": [
+    3,
+    8
+   ]
   },
   {
    "text": "Mùa nào thức nấy.",
@@ -6486,7 +6610,11 @@
   {
    "text": "Ăn cơm mới, nói chuyện cũ.",
    "source": "Tục ngữ",
-   "note": "Sống ở hiện tại nhưng nhớ chuyện xưa, nhớ những gì đã qua."
+   "note": "Sống ở hiện tại nhưng nhớ chuyện xưa, nhớ những gì đã qua.",
+   "lunarMonths": [
+    10,
+    11
+   ]
   },
   {
    "text": "Sông có khúc, người có lúc.",
@@ -6624,11 +6752,6 @@
    "note": "Đề cao người có học, quý chữ nghĩa hơn của cải."
   },
   {
-   "text": "Rồng vàng tắm nước ao tù\nNgười khôn ở với người ngu bực mình.",
-   "source": "Ca dao",
-   "note": "Người tài giỏi phải ở chỗ không xứng đáng thì thật uổng phí."
-  },
-  {
    "text": "Ếch ngồi đáy giếng.",
    "source": "Tục ngữ",
    "note": "Chê người hiểu biết hạn hẹp mà tưởng mình biết nhiều."
@@ -6731,17 +6854,34 @@
   {
    "text": "Ếch kêu uôm uôm, ao chuôm đầy nước.",
    "source": "Tục ngữ",
-   "note": "Nghe tiếng ếch kêu ran là dấu hiệu sắp có mưa lớn."
+   "note": "Nghe tiếng ếch kêu ran là dấu hiệu sắp có mưa lớn.",
+   "lunarMonths": [
+    4,
+    5,
+    6,
+    7
+   ]
   },
   {
    "text": "Quạ tắm thì ráo, sáo tắm thì mưa.",
    "source": "Tục ngữ",
-   "note": "Kinh nghiệm xem chim đoán thời tiết: quạ tắm thì nắng, sáo tắm thì mưa."
+   "note": "Kinh nghiệm xem chim đoán thời tiết: quạ tắm thì nắng, sáo tắm thì mưa.",
+   "lunarMonths": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+   ]
   },
   {
    "text": "Rét tháng ba, bà già chết cóng.",
    "source": "Tục ngữ",
-   "note": "Rét cuối mùa tháng ba âm lịch tuy ngắn nhưng rất buốt."
+   "note": "Rét cuối mùa tháng ba âm lịch tuy ngắn nhưng rất buốt.",
+   "lunarMonths": [
+    3
+   ]
   },
   {
    "text": "Một mặt người bằng mười mặt của.",

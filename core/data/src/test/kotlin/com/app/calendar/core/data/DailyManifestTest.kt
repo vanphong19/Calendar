@@ -22,7 +22,8 @@ import java.time.YearMonth
 class DailyManifestTest {
     private val context = ApplicationProvider.getApplicationContext<Context>()
     private val reader = AssetReader(context, Dispatchers.Unconfined)
-    private val repository = AssetDailyContentRepository(reader)
+    private val lunar = com.app.calendar.core.lunar.LunarCalendar()
+    private val repository = AssetDailyContentRepository(reader, lunar)
     private val manifest = repository.parse(context.assets.open("daily/manifest.json").bufferedReader().readText())
 
     private val allowedLicense = Regex("^(CC0( 1\\.0)?|Public domain|PD.*|CC BY(-SA)? [1-4]\\.0( .*)?|CC BY(-SA)? 2\\.5( .*)?)$", RegexOption.IGNORE_CASE)
@@ -81,6 +82,29 @@ class DailyManifestTest {
     fun `sayings pool is large enough and every saying is explained`() {
         assertThat(manifest.sayings.size).isAtLeast(100)
         manifest.sayings.forEach { assertThat(it.text).isNotEmpty() }
+    }
+
+    @Test
+    fun `pool sayings always match the lunar season of the day`() {
+        var date = LocalDate.of(2026, 1, 1)
+        val seasonalSeen = mutableSetOf<String>()
+        while (date.year < 2028) {
+            val saying = repository.poolSaying(manifest.sayings, date)!!
+            val month = lunar.toLunar(date).month
+            assertWithMessage("$date: ${saying.text}").that(saying.lunarMonths.isEmpty() || month in saying.lunarMonths).isTrue()
+            if (saying.lunarMonths.isNotEmpty()) seasonalSeen += saying.text
+            date = date.plusDays(1)
+        }
+        assertThat(seasonalSeen).isNotEmpty()
+    }
+
+    @Test
+    fun `every month tag is a valid lunar month and day entries avoid movable lunar dates`() {
+        manifest.sayings.flatMap { it.lunarMonths }.forEach { assertThat(it).isIn(1..12) }
+        // A fixed Gregorian day cannot carry a saying tied to a lunar month: it would be wrong in some years.
+        manifest.days.forEach { (key, entry) ->
+            entry.saying?.let { assertWithMessage(key).that(it.lunarMonths).isEmpty() }
+        }
     }
 
     private fun assertWithId(id: String, condition: Boolean) = assertWithMessage(id).that(condition).isTrue()

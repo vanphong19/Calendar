@@ -2,6 +2,7 @@ package com.app.calendar.core.data.repository
 
 import com.app.calendar.core.data.assets.AssetReader
 import com.app.calendar.core.domain.repository.DailyContentRepository
+import com.app.calendar.core.lunar.LunarCalendar
 import com.app.calendar.core.model.DailyContent
 import com.app.calendar.core.model.DailyImage
 import com.app.calendar.core.model.Saying
@@ -22,6 +23,7 @@ import javax.inject.Singleton
 @Singleton
 internal class AssetDailyContentRepository @Inject constructor(
     private val assets: AssetReader,
+    private val lunarCalendar: LunarCalendar,
 ) : DailyContentRepository {
 
     private val mutex = Mutex()
@@ -38,7 +40,7 @@ internal class AssetDailyContentRepository @Inject constructor(
         val entry = holidayRuleIds.firstNotNullOfOrNull { m.holidays[it] }
             ?: m.days[dayKey(date)]
             ?: m.months[monthKey(date.monthValue)]
-        val saying = entry?.saying ?: m.sayings.takeIf { it.isNotEmpty() }?.let { it[(date.dayOfYear - 1) % it.size] }
+        val saying = entry?.saying ?: poolSaying(m.sayings, date)
         return DailyContent(
             date = date,
             title = entry?.title.orEmpty(),
@@ -60,6 +62,18 @@ internal class AssetDailyContentRepository @Inject constructor(
             image = entry?.image?.let { m.images[it] }?.toModel(),
             saying = entry?.saying?.toModel(),
         )
+    }
+
+    /**
+     * Picks a saying from the pool that fits the season. Sayings that mention a month refer to the
+     * lunar month ("tháng tám" = tháng Tám âm lịch), so they are only eligible during those lunar
+     * months; timeless sayings are eligible every day. Deterministic for a given date.
+     */
+    internal fun poolSaying(pool: List<SayingDto>, date: LocalDate): SayingDto? {
+        if (pool.isEmpty()) return null
+        val lunarMonth = lunarCalendar.toLunar(date).month
+        val candidates = pool.filter { it.lunarMonths.isEmpty() || lunarMonth in it.lunarMonths }
+        return candidates[(date.dayOfYear - 1) % candidates.size]
     }
 
     private fun dayKey(date: LocalDate) = "%02d-%02d".format(date.monthValue, date.dayOfMonth)
@@ -111,6 +125,12 @@ internal data class ImageDto(
 }
 
 @Serializable
-internal data class SayingDto(val text: String, val source: String? = null, val note: String? = null) {
+internal data class SayingDto(
+    val text: String,
+    val source: String? = null,
+    val note: String? = null,
+    /** Lunar months (1–12) the saying belongs to; empty = fits any time of year. */
+    val lunarMonths: List<Int> = emptyList(),
+) {
     fun toModel() = Saying(text, source, note)
 }
