@@ -13,6 +13,7 @@ import coil3.network.okhttp.OkHttpNetworkFetcherFactory
 import coil3.request.crossfade
 import com.app.calendar.core.data.reminder.ReminderNotifier
 import com.app.calendar.core.data.reminder.RescheduleRemindersWorker
+import com.app.calendar.images.PrefetchDailyImagesWorker
 import dagger.hilt.android.HiltAndroidApp
 import okhttp3.OkHttpClient
 import javax.inject.Inject
@@ -30,6 +31,7 @@ class LichApplication : Application(), Configuration.Provider, SingletonImageLoa
         ReminderNotifier.ensureChannel(this)
         RescheduleRemindersWorker.ensurePeriodic(this)
         RescheduleRemindersWorker.enqueueNow(this)
+        PrefetchDailyImagesWorker.schedule(this)
     }
 
     /** One image loader for the whole app: bounded memory and a 100 MB disk cache for daily images. */
