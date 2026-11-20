@@ -65,6 +65,7 @@
 
     <string name="nav_today">Hôm nay</string>
     <string name="nav_month">Tháng</string>
+    <string name="nav_events">Sự kiện</string>
     <string name="nav_holidays">Ngày lễ</string>
     <string name="nav_settings">Cài đặt</string>
 

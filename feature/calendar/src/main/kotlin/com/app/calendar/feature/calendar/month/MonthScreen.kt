@@ -26,11 +26,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -90,7 +88,6 @@ private const val WEEK_COUNT = 10_400
 @Composable
 fun MonthScreen(
     viewModel: MonthViewModel,
-    onAddEvent: (LocalDate) -> Unit,
     onOpenEvent: (EventOccurrence) -> Unit,
     onOpenHoliday: (Holiday) -> Unit,
     onOpenPage: (LocalDate) -> Unit,
@@ -116,11 +113,6 @@ fun MonthScreen(
     Scaffold(
         modifier = modifier,
         contentWindowInsets = WindowInsets.safeDrawing.only(WindowInsetsSides.Top + WindowInsetsSides.Horizontal),
-        floatingActionButton = {
-            FloatingActionButton(onClick = { onAddEvent(state.selectedDate) }) {
-                Icon(Icons.Filled.Add, contentDescription = stringResource(DsR.string.action_add_event))
-            }
-        },
     ) { padding ->
         LazyColumn(
             modifier = Modifier.fillMaxSize().padding(padding),
@@ -167,7 +159,6 @@ fun MonthScreen(
                         holidays = selectedPage.details.holidays.takeIf { selectedPage.details.date == state.selectedDate }.orEmpty(),
                         occurrences = selectedPage.details.occurrences.takeIf { selectedPage.details.date == state.selectedDate }.orEmpty(),
                         lunarLabel = { LichFormat.lunarDateLong(selectedPage.details.lunar, selectedPage.details.yearCanChi.displayName) },
-                        onAddEvent = onAddEvent,
                         onOpenEvent = onOpenEvent,
                         onOpenHoliday = onOpenHoliday,
                         onOpenPage = onOpenPage,
@@ -185,7 +176,6 @@ fun MonthScreen(
                         holidays = selectedPage.details.holidays.takeIf { selectedPage.details.date == state.selectedDate }.orEmpty(),
                         occurrences = selectedPage.details.occurrences.takeIf { selectedPage.details.date == state.selectedDate }.orEmpty(),
                         lunarLabel = { LichFormat.lunarDateLong(selectedPage.details.lunar, selectedPage.details.yearCanChi.displayName) },
-                        onAddEvent = onAddEvent,
                         onOpenEvent = onOpenEvent,
                         onOpenHoliday = onOpenHoliday,
                         onOpenPage = onOpenPage,
@@ -337,7 +327,6 @@ private fun LazyListScope.selectedDayItems(
     holidays: List<Holiday>,
     occurrences: List<EventOccurrence>,
     lunarLabel: @Composable () -> String,
-    onAddEvent: (LocalDate) -> Unit,
     onOpenEvent: (EventOccurrence) -> Unit,
     onOpenHoliday: (Holiday) -> Unit,
     onOpenPage: (LocalDate) -> Unit,
@@ -362,8 +351,6 @@ private fun LazyListScope.selectedDayItems(
             EmptyState(
                 title = stringResource(R.string.calendar_empty_title),
                 message = stringResource(R.string.calendar_empty_message),
-                actionLabel = stringResource(DsR.string.action_add_event),
-                onAction = { onAddEvent(date) },
             )
         }
     } else {

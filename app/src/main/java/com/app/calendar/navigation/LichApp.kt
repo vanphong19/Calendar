@@ -1,6 +1,7 @@
 package com.app.calendar.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
@@ -36,6 +37,9 @@ import com.app.calendar.feature.events.editor.EventEditorScreen
 import com.app.calendar.feature.events.editor.EventEditorViewModel
 import com.app.calendar.feature.events.navigation.EventDetailRoute
 import com.app.calendar.feature.events.navigation.EventEditorRoute
+import com.app.calendar.feature.events.navigation.EventsRoute
+import com.app.calendar.feature.events.list.EventsScreen
+import com.app.calendar.feature.events.list.EventsViewModel
 import com.app.calendar.feature.holidays.HolidayDetailRoute
 import com.app.calendar.feature.holidays.HolidayDetailScreen
 import com.app.calendar.feature.holidays.HolidayDetailViewModel
@@ -50,6 +54,7 @@ import java.time.LocalDate
 private enum class TopLevel(val route: NavKey, val icon: ImageVector, val label: Int) {
     TODAY(TodayRoute(), Icons.Filled.Home, DsR.string.nav_today),
     MONTH(MonthRoute, Icons.Filled.DateRange, DsR.string.nav_month),
+    EVENTS(EventsRoute, Icons.AutoMirrored.Filled.List, DsR.string.nav_events),
     HOLIDAYS(HolidaysRoute, Icons.Filled.Star, DsR.string.nav_holidays),
     SETTINGS(SettingsRoute, Icons.Filled.Settings, DsR.string.nav_settings),
 }
@@ -57,6 +62,7 @@ private enum class TopLevel(val route: NavKey, val icon: ImageVector, val label:
 private fun NavKey.topLevel(): TopLevel? = when (this) {
     is TodayRoute -> TopLevel.TODAY
     MonthRoute -> TopLevel.MONTH
+    EventsRoute -> TopLevel.EVENTS
     HolidaysRoute -> TopLevel.HOLIDAYS
     SettingsRoute -> TopLevel.SETTINGS
     else -> null
@@ -86,14 +92,26 @@ fun LichApp(
     val addEvent: (LocalDate) -> Unit = { backStack.add(EventEditorRoute(date = it.toString())) }
     val openHoliday: (Holiday) -> Unit = { backStack.add(HolidayDetailRoute(it.ruleId, it.date.year)) }
 
+    val itemColors = androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults.itemColors(
+        navigationBarItemColors = androidx.compose.material3.NavigationBarItemDefaults.colors(
+            indicatorColor = androidx.compose.material3.MaterialTheme.colorScheme.primaryContainer,
+            selectedIconColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
+            selectedTextColor = androidx.compose.material3.MaterialTheme.colorScheme.primary,
+        ),
+    )
     NavigationSuiteScaffold(
+        navigationSuiteColors = androidx.compose.material3.adaptive.navigationsuite.NavigationSuiteDefaults.colors(
+            navigationBarContainerColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceContainerLow,
+            navigationRailContainerColor = androidx.compose.material3.MaterialTheme.colorScheme.surfaceContainerLow,
+        ),
         navigationSuiteItems = {
             TopLevel.entries.forEach { tab ->
                 item(
                     selected = tab == selectedTab,
                     onClick = { backStack.switchTo(tab.route) },
                     icon = { Icon(tab.icon, contentDescription = null) },
-                    label = { Text(stringResource(tab.label)) },
+                    label = { Text(stringResource(tab.label), maxLines = 1) },
+                    colors = itemColors,
                 )
             }
         },
@@ -117,16 +135,18 @@ fun LichApp(
                     val vm = hiltViewModel<TodayViewModel, TodayViewModel.Factory>(
                         creationCallback = { it.create(route.date?.let(LocalDate::parse)) },
                     )
-                    TodayScreen(vm, onAddEvent = addEvent, onOpenEvent = openEvent, onOpenHoliday = openHoliday)
+                    TodayScreen(vm, onOpenEvent = openEvent, onOpenHoliday = openHoliday)
                 }
                 entry<MonthRoute> {
                     MonthScreen(
                         viewModel = hiltViewModel<MonthViewModel>(),
-                        onAddEvent = addEvent,
                         onOpenEvent = openEvent,
                         onOpenHoliday = openHoliday,
                         onOpenPage = { date -> backStack.switchTo(TodayRoute(date.toString())) },
                     )
+                }
+                entry<EventsRoute> {
+                    EventsScreen(hiltViewModel<EventsViewModel>(), onAddEvent = addEvent, onOpenEvent = openEvent)
                 }
                 entry<HolidaysRoute> {
                     HolidaysScreen(hiltViewModel<HolidaysViewModel>()) { ruleId, year -> backStack.add(HolidayDetailRoute(ruleId, year)) }

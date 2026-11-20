@@ -1,6 +1,16 @@
 package com.app.calendar.feature.holidays
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.unit.sp
+import com.app.calendar.core.domain.usecase.HolidayCountdown
+import com.app.calendar.core.model.Holiday
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -68,6 +78,11 @@ fun HolidaysScreen(viewModel: HolidaysViewModel, onOpenHoliday: (ruleId: String,
                 IconButton(onClick = { viewModel.changeYear(1) }) {
                     Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, stringResource(R.string.holidays_next_year))
                 }
+            }
+        }
+        state.countdown?.let { countdown ->
+            item(key = "countdown") {
+                CountdownCard(countdown, state.upcoming, onChoose = viewModel::chooseCountdown)
             }
         }
         item(key = "filters") {
@@ -164,5 +179,62 @@ private fun DaysOffSection(year: Int, daysOff: List<OfficialDayOff>) {
             Text(stringResource(R.string.holidays_source, daysOff.map { it.source }.distinct().joinToString("; ")), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         HorizontalDivider(Modifier.padding(top = 8.dp))
+    }
+}
+
+/** A small tear-off sheet that counts down to the chosen holiday; chips pick another one. */
+@Composable
+private fun CountdownCard(countdown: HolidayCountdown, upcoming: List<Holiday>, onChoose: (String) -> Unit) {
+    val colors = MaterialTheme.lich
+    val holiday = countdown.holiday
+    val description = stringResource(R.string.holidays_countdown_cd, countdown.daysLeft.toInt(), holiday.name)
+    Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp, topStart = 4.dp, topEnd = 4.dp))
+                .background(colors.paper),
+        ) {
+            Box(Modifier.fillMaxWidth().height(10.dp).background(colors.binding))
+            Column(
+                Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 16.dp).clearAndSetSemantics { contentDescription = description },
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(stringResource(R.string.holidays_countdown_band).uppercase(), style = LichTextStyles.Band, color = colors.accent)
+                if (countdown.daysLeft == 0L) {
+                    Text(stringResource(R.string.holidays_countdown_today), style = MaterialTheme.typography.titleMedium, color = colors.inkMuted, modifier = Modifier.padding(top = 12.dp))
+                } else {
+                    Text(
+                        countdown.daysLeft.toString(),
+                        style = LichTextStyles.PageDay.copy(fontSize = 88.sp, lineHeight = 92.sp),
+                        color = colors.accent,
+                    )
+                    Text(stringResource(R.string.holidays_countdown_days_label), style = MaterialTheme.typography.bodyMedium, color = colors.inkMuted)
+                }
+                Text(holiday.name, style = MaterialTheme.typography.headlineSmall, color = colors.ink, textAlign = TextAlign.Center)
+                Text(
+                    LichFormat.weekdayFull(holiday.date.dayOfWeek) + ", " + LichFormat.solarDate(holiday.date),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = colors.inkMuted,
+                )
+            }
+        }
+        Text(
+            stringResource(R.string.holidays_countdown_choose),
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 12.dp, bottom = 4.dp),
+        )
+        val selectedIndex = upcoming.indexOfFirst { it.ruleId == holiday.ruleId }.coerceAtLeast(0)
+        val rowState = androidx.compose.foundation.lazy.rememberLazyListState(initialFirstVisibleItemIndex = selectedIndex)
+        LazyRow(state = rowState, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            items(upcoming, key = { it.ruleId }) { item ->
+                FilterChip(
+                    selected = item.ruleId == holiday.ruleId,
+                    onClick = { onChoose(item.ruleId) },
+                    label = { Text(stringResource(R.string.holidays_chip_date, item.name, "%02d/%02d".format(item.date.dayOfMonth, item.date.monthValue))) },
+                )
+            }
+        }
     }
 }

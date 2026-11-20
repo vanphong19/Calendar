@@ -35,7 +35,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -72,14 +71,12 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
     var exactAllowed by remember { mutableStateOf(context.canScheduleExact()) }
     var reminderDialog by rememberSaveable { mutableStateOf<Boolean?>(null) } // true = all-day
     var cacheCleared by rememberSaveable { mutableStateOf(false) }
-    var refreshTick by remember { mutableIntStateOf(0) }
 
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) {
         notificationsAllowed = NotificationManagerCompat.from(context).areNotificationsEnabled()
         val exact = context.canScheduleExact()
         if (exact != exactAllowed) viewModel.onAlarmPermissionChanged()
         exactAllowed = exact
-        refreshTick++
     }
 
     val p = prefs ?: return

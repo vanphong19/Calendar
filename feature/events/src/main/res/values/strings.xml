@@ -50,4 +50,14 @@
     <string name="events_delete_all">Tất cả sự kiện trong chuỗi</string>
     <string name="events_no_reminders">Không có nhắc nhở</string>
     <string name="events_notification_rationale">Hãy cho phép thông báo để nhận lời nhắc sự kiện.</string>
+    <string name="events_tab_title">Sự kiện của bạn</string>
+    <string name="events_upcoming">Sắp tới</string>
+    <string name="events_past">Đã qua</string>
+    <string name="events_list_empty_title">Chưa có sự kiện nào</string>
+    <string name="events_list_empty_message">Tạo lịch hẹn, ngày giỗ hay sinh nhật âm lịch để được nhắc đúng lúc.</string>
+    <string name="events_past_empty">Không có sự kiện nào trong 6 tháng qua.</string>
+    <string name="events_relative_today">Hôm nay</string>
+    <string name="events_relative_tomorrow">Ngày mai</string>
+    <string name="events_relative_in_days">Còn %1$d ngày</string>
+    <string name="events_lunar_short">%1$d/%2$d âm lịch</string>
 </resources>

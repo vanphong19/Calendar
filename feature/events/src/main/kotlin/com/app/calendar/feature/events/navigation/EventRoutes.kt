@@ -10,3 +10,7 @@ data class EventEditorRoute(val eventId: Long? = null, val date: String? = null)
 /** Details of one occurrence of an event. */
 @Serializable
 data class EventDetailRoute(val eventId: Long, val occurrenceDate: String? = null) : NavKey
+
+/** "Sự kiện" tab: the place to add and manage personal events. */
+@Serializable
+data object EventsRoute : NavKey

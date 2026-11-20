@@ -52,6 +52,7 @@ internal class DataStorePreferencesRepository @Inject constructor(
                 ?: defaults.hiddenHolidayCategories,
             dailyImagesEnabled = this[Keys.DAILY_IMAGES] ?: defaults.dailyImagesEnabled,
             dailyImagesWifiOnly = this[Keys.DAILY_IMAGES_WIFI_ONLY] ?: defaults.dailyImagesWifiOnly,
+            countdownHolidayId = this[Keys.COUNTDOWN_HOLIDAY]?.takeIf { it.isNotBlank() },
         )
     }
 
@@ -66,6 +67,7 @@ internal class DataStorePreferencesRepository @Inject constructor(
         this[Keys.HIDDEN_HOLIDAY_CATEGORIES] = p.hiddenHolidayCategories.map { it.name }.toSet()
         this[Keys.DAILY_IMAGES] = p.dailyImagesEnabled
         this[Keys.DAILY_IMAGES_WIFI_ONLY] = p.dailyImagesWifiOnly
+        this[Keys.COUNTDOWN_HOLIDAY] = p.countdownHolidayId.orEmpty()
     }
 
     private object Keys {
@@ -79,6 +81,7 @@ internal class DataStorePreferencesRepository @Inject constructor(
         val HIDDEN_HOLIDAY_CATEGORIES = stringSetPreferencesKey("hidden_holiday_categories")
         val DAILY_IMAGES = booleanPreferencesKey("daily_images")
         val DAILY_IMAGES_WIFI_ONLY = booleanPreferencesKey("daily_images_wifi_only")
+        val COUNTDOWN_HOLIDAY = stringPreferencesKey("countdown_holiday_id")
     }
 
     private companion object {

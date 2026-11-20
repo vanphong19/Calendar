@@ -36,20 +36,18 @@ import com.app.calendar.core.designsystem.R as DsR
 @Composable
 fun DayDetailContent(
     state: DayPageState,
-    onAddEvent: () -> Unit,
     onOpenEvent: (EventOccurrence) -> Unit,
     onOpenHoliday: (Holiday) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(modifier, contentPadding = androidx.compose.foundation.layout.PaddingValues(bottom = 24.dp)) {
-        dayDetailItems(state, onAddEvent, onOpenEvent, onOpenHoliday)
+        dayDetailItems(state, onOpenEvent, onOpenHoliday)
     }
 }
 
 @OptIn(ExperimentalLayoutApi::class)
 fun LazyListScope.dayDetailItems(
     state: DayPageState,
-    onAddEvent: () -> Unit,
     onOpenEvent: (EventOccurrence) -> Unit,
     onOpenHoliday: (Holiday) -> Unit,
 ) {
@@ -80,18 +78,11 @@ fun LazyListScope.dayDetailItems(
             EmptyState(
                 title = stringResource(R.string.calendar_empty_title),
                 message = stringResource(R.string.calendar_empty_message),
-                actionLabel = stringResource(DsR.string.action_add_event),
-                onAction = onAddEvent,
             )
         }
     } else {
         items(details.occurrences, key = { "e-" + it.event.id + it.start }) { occurrence ->
             EventRow(occurrence, onClick = { onOpenEvent(occurrence) }, modifier = Modifier.padding(horizontal = 8.dp))
-        }
-        item(key = "events-add") {
-            TextButton(onClick = onAddEvent, modifier = Modifier.padding(horizontal = 12.dp)) {
-                Text(stringResource(DsR.string.action_add_event))
-            }
         }
     }
     state.content?.let { content ->

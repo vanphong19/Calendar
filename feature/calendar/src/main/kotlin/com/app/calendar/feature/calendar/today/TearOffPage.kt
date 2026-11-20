@@ -48,6 +48,7 @@ import com.app.calendar.core.designsystem.component.dayInkColor
 import com.app.calendar.core.designsystem.format.LichFormat
 import com.app.calendar.core.designsystem.theme.LichTextStyles
 import com.app.calendar.core.designsystem.theme.lich
+import com.app.calendar.core.domain.usecase.HolidayCountdown
 import com.app.calendar.core.model.DayDetails
 import com.app.calendar.core.model.Holiday
 import com.app.calendar.core.model.HolidayCategory
@@ -69,6 +70,7 @@ fun TearOffPage(
     isToday: Boolean,
     onOpenDetails: () -> Unit,
     modifier: Modifier = Modifier,
+    countdown: HolidayCountdown? = null,
 ) {
     val details = state.details
     val colors = MaterialTheme.lich
@@ -94,7 +96,7 @@ fun TearOffPage(
                 DayNumber(details, dayNumberHeight, isToday)
                 HolidayLine(details.holidays, details.dayOff)
                 if (settings.showLunar) LunarBox(details)
-                PageFooter(state, onOpenDetails)
+                PageFooter(state, countdown, onOpenDetails)
             }
             val columnModifier = Modifier.fillMaxSize().padding(horizontal = 20.dp).padding(bottom = 14.dp)
             if (roomy) {
@@ -283,7 +285,7 @@ private fun LunarBox(details: DayDetails) {
 }
 
 @Composable
-private fun PageFooter(state: DayPageState, onOpenDetails: () -> Unit) {
+private fun PageFooter(state: DayPageState, countdown: HolidayCountdown?, onOpenDetails: () -> Unit) {
     val colors = MaterialTheme.lich
     val occurrences = state.details.occurrences
     val saying = state.content?.saying
@@ -302,6 +304,7 @@ private fun PageFooter(state: DayPageState, onOpenDetails: () -> Unit) {
                 overflow = TextOverflow.Ellipsis,
             )
         }
+        if (countdown != null) CountdownLine(countdown)
         if (occurrences.isNotEmpty()) {
             Column(
                 Modifier
@@ -335,3 +338,24 @@ private fun PageFooter(state: DayPageState, onOpenDetails: () -> Unit) {
     }
 }
 
+
+/** "Còn 78 ngày đến Tết Nguyên Đán", printed like a small stamp at the foot of today's page. */
+@Composable
+private fun CountdownLine(countdown: HolidayCountdown) {
+    val name = countdown.holiday.name
+    val text = when (countdown.daysLeft) {
+        0L -> stringResource(R.string.calendar_countdown_today, name)
+        1L -> stringResource(R.string.calendar_countdown_tomorrow, name)
+        else -> stringResource(R.string.calendar_countdown_days, countdown.daysLeft.toInt(), name)
+    }
+    Text(
+        text,
+        style = MaterialTheme.typography.labelLarge,
+        color = MaterialTheme.lich.accent,
+        textAlign = TextAlign.Center,
+        modifier = Modifier
+            .clip(RoundedCornerShape(50))
+            .background(MaterialTheme.lich.accent.copy(alpha = 0.08f))
+            .padding(horizontal = 14.dp, vertical = 6.dp),
+    )
+}

@@ -1,6 +1,7 @@
 package com.app.calendar.feature.calendar.today
 
 import android.provider.Settings
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,12 +27,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilledIconButton
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -66,6 +66,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.app.calendar.core.designsystem.theme.lich
 import com.app.calendar.core.model.EventOccurrence
 import com.app.calendar.core.model.Holiday
+import com.app.calendar.core.designsystem.format.LichFormat
 import com.app.calendar.feature.calendar.DayPaging
 import com.app.calendar.feature.calendar.R
 import kotlinx.coroutines.launch
@@ -78,7 +79,6 @@ import com.app.calendar.core.designsystem.R as DsR
 @Composable
 fun TodayScreen(
     viewModel: TodayViewModel,
-    onAddEvent: (LocalDate) -> Unit,
     onOpenEvent: (EventOccurrence) -> Unit,
     onOpenHoliday: (Holiday) -> Unit,
     modifier: Modifier = Modifier,
@@ -86,6 +86,7 @@ fun TodayScreen(
     val selected by viewModel.selected.collectAsStateWithLifecycle()
     val today by viewModel.today.collectAsStateWithLifecycle()
     val settings by viewModel.settings.collectAsStateWithLifecycle()
+    val countdown by viewModel.countdown.collectAsStateWithLifecycle()
     val pagerState = rememberPagerState(initialPage = DayPaging.pageOf(selected)) { DayPaging.PAGE_COUNT }
     var showDetails by rememberSaveable { mutableStateOf(false) }
     var showPicker by rememberSaveable { mutableStateOf(false) }
@@ -133,21 +134,21 @@ fun TodayScreen(
                         isToday = date == today,
                         onOpenDetails = { if (!twoPane) showDetails = true },
                         modifier = Modifier.fillMaxSize(),
+                        countdown = countdown.takeIf { date == today },
                     )
                 }
                 ControlBar(
+                    date = selected,
                     isToday = selected == today,
                     onPrevious = { viewModel.onAction(TodayAction.Step(-1)) },
                     onNext = { viewModel.onAction(TodayAction.Step(1)) },
                     onToday = { viewModel.onAction(TodayAction.GoToToday) },
                     onPickDate = { showPicker = true },
-                    onAdd = { onAddEvent(selected) },
                 )
             }
             if (twoPane) {
                 DayDetailContent(
                     state = selectedPage,
-                    onAddEvent = { onAddEvent(selected) },
                     onOpenEvent = onOpenEvent,
                     onOpenHoliday = onOpenHoliday,
                     modifier = Modifier
@@ -166,7 +167,6 @@ fun TodayScreen(
             content = {
                 DayDetailContent(
                     state = selectedPage,
-                    onAddEvent = { showDetails = false; onAddEvent(selected) },
                     onOpenEvent = { showDetails = false; onOpenEvent(it) },
                     onOpenHoliday = { showDetails = false; onOpenHoliday(it) },
                 )
@@ -246,35 +246,41 @@ private fun PageStack(
     }
 }
 
+/** One-handed navigation under the page: previous · date (opens picker) · next. View only. */
 @Composable
 private fun ControlBar(
+    date: LocalDate,
     isToday: Boolean,
     onPrevious: () -> Unit,
     onNext: () -> Unit,
     onToday: () -> Unit,
     onPickDate: () -> Unit,
-    onAdd: () -> Unit,
 ) {
     Row(
-        Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 8.dp),
+        Modifier.fillMaxWidth().height(64.dp).padding(horizontal = 12.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         IconButton(onClick = onPrevious) {
             Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = stringResource(DsR.string.action_previous_day))
         }
+        Row(
+            Modifier.weight(1f),
+            horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterHorizontally),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            TextButton(onClick = onPickDate) {
+                Icon(Icons.Filled.DateRange, contentDescription = null, modifier = Modifier.padding(end = 8.dp))
+                Text(
+                    LichFormat.weekdayShort(date.dayOfWeek) + ", " + LichFormat.solarDate(date),
+                    style = MaterialTheme.typography.titleSmall,
+                )
+            }
+            AnimatedVisibility(visible = !isToday) {
+                FilledTonalButton(onClick = onToday) { Text(stringResource(DsR.string.action_today)) }
+            }
+        }
         IconButton(onClick = onNext) {
             Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = stringResource(DsR.string.action_next_day))
-        }
-        if (!isToday) {
-            TextButton(onClick = onToday) { Text(stringResource(DsR.string.action_today)) }
-        }
-        Box(Modifier.weight(1f))
-        IconButton(onClick = onPickDate) {
-            Icon(Icons.Filled.DateRange, contentDescription = stringResource(R.string.calendar_pick_date))
-        }
-        FilledIconButton(onClick = onAdd, modifier = Modifier.padding(start = 4.dp)) {
-            Icon(Icons.Filled.Add, contentDescription = stringResource(DsR.string.action_add_event))
         }
     }
 }

@@ -2,6 +2,8 @@ package com.app.calendar.feature.calendar.today
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.calendar.core.domain.usecase.HolidayCountdown
+import com.app.calendar.core.domain.usecase.ObserveHolidayCountdownUseCase
 import com.app.calendar.feature.calendar.DayPageLoader
 import com.app.calendar.feature.calendar.DayPageState
 import com.app.calendar.feature.calendar.PageSettings
@@ -13,6 +15,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import java.time.LocalDate
 
 sealed interface TodayAction {
@@ -25,6 +28,7 @@ sealed interface TodayAction {
 class TodayViewModel @AssistedInject constructor(
     @Assisted initialDate: LocalDate?,
     private val loader: DayPageLoader,
+    observeCountdown: ObserveHolidayCountdownUseCase,
 ) : ViewModel() {
 
     val today: StateFlow<LocalDate> = loader.today().asState(viewModelScope, LocalDate.now())
@@ -34,6 +38,10 @@ class TodayViewModel @AssistedInject constructor(
     val selected: StateFlow<LocalDate> = _selected.asStateFlow()
 
     val settings: StateFlow<PageSettings> = loader.settings(viewModelScope)
+
+    /** Countdown to the user's chosen holiday, relative to the real today. */
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    val countdown: StateFlow<HolidayCountdown?> = today.flatMapLatest { observeCountdown(it) }.asState(viewModelScope, null)
 
     fun page(date: LocalDate): StateFlow<DayPageState> = loader.page(date, viewModelScope)
 

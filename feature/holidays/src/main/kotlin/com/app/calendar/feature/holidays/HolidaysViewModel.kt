@@ -5,6 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.app.calendar.core.domain.holiday.HolidayCalendar
 import com.app.calendar.core.domain.repository.DailyContentRepository
 import com.app.calendar.core.domain.repository.HolidayRepository
+import com.app.calendar.core.domain.repository.PreferencesRepository
+import com.app.calendar.core.domain.usecase.HolidayCountdown
+import com.app.calendar.core.domain.usecase.ObserveHolidayCountdownUseCase
+import com.app.calendar.core.domain.usecase.UpcomingHolidaysUseCase
+import kotlinx.coroutines.launch
 import com.app.calendar.core.lunar.LunarCalendar
 import com.app.calendar.core.lunar.LunarDate
 import com.app.calendar.core.model.DailyContent
@@ -33,6 +38,8 @@ data class HolidayListItem(val holiday: Holiday, val lastDate: LocalDate, val lu
 
 data class HolidaysUiState(
     val year: Int,
+    val countdown: HolidayCountdown? = null,
+    val upcoming: List<Holiday> = emptyList(),
     val filter: Set<HolidayCategory> = HolidayCategory.entries.toSet(),
     val items: List<HolidayListItem>? = null,
     val daysOff: List<OfficialDayOff> = emptyList(),
@@ -43,11 +50,18 @@ data class HolidaysUiState(
 class HolidaysViewModel @Inject constructor(
     private val holidayCalendar: HolidayCalendar,
     private val lunarCalendar: LunarCalendar,
+    private val preferences: PreferencesRepository,
+    upcomingHolidays: UpcomingHolidaysUseCase,
+    observeCountdown: ObserveHolidayCountdownUseCase,
 ) : ViewModel() {
+    private val today = LocalDate.now()
+    private val countdown = observeCountdown(today)
+    private val upcoming = flow { emit(upcomingHolidays(today)) }
+
     private val year = MutableStateFlow(LocalDate.now().year)
     private val filter = MutableStateFlow(HolidayCategory.entries.toSet())
 
-    val state: StateFlow<HolidaysUiState> = combine(year, filter) { y, f -> y to f }
+    private val list = combine(year, filter) { y, f -> y to f }
         .mapLatest { (y, f) ->
             val data = holidayCalendar.year(y)
             val items = data.holidays
@@ -55,9 +69,15 @@ class HolidaysViewModel @Inject constructor(
                 .groupBy { it.ruleId to it.date.minusDays(it.dayIndex - 1L) }
                 .map { (_, days) -> HolidayListItem(days.first(), days.last().date, lunarCalendar.toLunar(days.first().date)) }
                 .sortedBy { it.holiday.date }
-            HolidaysUiState(y, f, items, data.daysOff.values.sortedBy { it.date })
+            HolidaysUiState(year = y, filter = f, items = items, daysOff = data.daysOff.values.sortedBy { it.date })
         }
+
+    val state: StateFlow<HolidaysUiState> = combine(list, countdown, upcoming) { base, c, u -> base.copy(countdown = c, upcoming = u) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HolidaysUiState(LocalDate.now().year))
+
+    fun chooseCountdown(ruleId: String) {
+        viewModelScope.launch { preferences.update { it.copy(countdownHolidayId = ruleId) } }
+    }
 
     fun changeYear(delta: Int) = year.update { (it + delta).coerceIn(1901, 2099) }
 

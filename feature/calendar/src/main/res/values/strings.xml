@@ -20,7 +20,7 @@
     <string name="calendar_sheet_lunar">Thông tin âm lịch</string>
     <string name="calendar_sheet_image_source">Xem nguồn ảnh</string>
     <string name="calendar_empty_title">Ngày này còn trống</string>
-    <string name="calendar_empty_message">Thêm một lịch hẹn hay lời nhắc để không bỏ lỡ điều quan trọng.</string>
+    <string name="calendar_empty_message">Không có sự kiện nào. Bạn có thể thêm lịch hẹn ở tab Sự kiện.</string>
 
     <string name="calendar_mode_month">Tháng</string>
     <string name="calendar_mode_week">Tuần</string>
@@ -36,4 +36,7 @@
     <string name="calendar_cd_today">hôm nay</string>
     <string name="calendar_cd_events">%1$d sự kiện</string>
     <string name="calendar_cd_tear_hint">Vuốt sang trái để xé tờ lịch, sang phải để xem ngày trước</string>
+    <string name="calendar_countdown_days">Còn %1$d ngày đến %2$s</string>
+    <string name="calendar_countdown_tomorrow">Ngày mai là %1$s</string>
+    <string name="calendar_countdown_today">Hôm nay là %1$s</string>
 </resources>

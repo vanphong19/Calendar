@@ -15,4 +15,10 @@
     <string name="holidays_upcoming_years">Các năm tới</string>
     <string name="holidays_not_found">Không tìm thấy ngày lễ này.</string>
     <string name="holidays_days_count">%1$d ngày</string>
+    <string name="holidays_countdown_band">Đếm ngược</string>
+    <string name="holidays_countdown_days_label">ngày nữa là đến</string>
+    <string name="holidays_countdown_today">Hôm nay là</string>
+    <string name="holidays_countdown_choose">Chọn ngày lễ để đếm ngược</string>
+    <string name="holidays_countdown_cd">Còn %1$d ngày nữa là đến %2$s</string>
+    <string name="holidays_chip_date">%1$s · %2$s</string>
 </resources>

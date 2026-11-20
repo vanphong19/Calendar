@@ -16,6 +16,8 @@ data class UserPreferences(
     val hiddenHolidayCategories: Set<HolidayCategory> = emptySet(),
     val dailyImagesEnabled: Boolean = true,
     val dailyImagesWifiOnly: Boolean = false,
+    /** Holiday rule the countdown follows; null means the default (Tết Nguyên Đán). */
+    val countdownHolidayId: String? = null,
 ) {
     fun isHolidayVisible(category: HolidayCategory): Boolean = showHolidays && category !in hiddenHolidayCategories
 }
