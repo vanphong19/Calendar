@@ -1,5 +1,9 @@
 package com.app.calendar.navigation
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.DateRange
@@ -30,6 +34,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import androidx.navigation3.ui.defaultTransitionSpec
 import com.app.calendar.OpenEventRequest
 import com.app.calendar.core.designsystem.R as DsR
 import com.app.calendar.core.model.EventOccurrence
@@ -67,6 +72,9 @@ private enum class TopLevel(val route: NavKey, val icon: ImageVector, val label:
     HOLIDAYS(HolidaysRoute, Icons.Filled.Star, DsR.string.nav_holidays),
     SETTINGS(SettingsRoute, Icons.Filled.Settings, DsR.string.nav_settings),
 }
+
+private const val TOP_LEVEL_ENTRY = "com.app.calendar.topLevel"
+private val topLevelMetadata = mapOf(TOP_LEVEL_ENTRY to true)
 
 private fun NavKey.topLevel(): TopLevel? = when (this) {
     is TodayRoute -> TopLevel.TODAY
@@ -145,18 +153,28 @@ fun LichApp(
         NavDisplay(
             backStack = backStack,
             onBack = { if (backStack.size > 1) backStack.removeLastOrNull() },
+            transitionSpec = {
+                val switchingTabs = initialState.entries.lastOrNull()?.metadata?.get(TOP_LEVEL_ENTRY) == true &&
+                    targetState.entries.lastOrNull()?.metadata?.get(TOP_LEVEL_ENTRY) == true
+                if (switchingTabs) {
+                    // Root tabs use a brief fade instead of the library's 700 ms navigation fade.
+                    fadeIn(tween(180)) togetherWith fadeOut(tween(180))
+                } else {
+                    defaultTransitionSpec<NavKey>().invoke(this)
+                }
+            },
             entryDecorators = listOf(
                 rememberSaveableStateHolderNavEntryDecorator(),
                 rememberViewModelStoreNavEntryDecorator(),
             ),
             entryProvider = entryProvider {
-                entry<TodayRoute> { route ->
+                entry<TodayRoute>(metadata = topLevelMetadata) { route ->
                     val vm = hiltViewModel<TodayViewModel, TodayViewModel.Factory>(
                         creationCallback = { it.create(route.date?.let(LocalDate::parse)) },
                     )
                     TodayScreen(vm, onOpenEvent = openEvent, onOpenHoliday = openHoliday)
                 }
-                entry<MonthRoute> {
+                entry<MonthRoute>(metadata = topLevelMetadata) {
                     MonthScreen(
                         viewModel = hiltViewModel<MonthViewModel>(),
                         onOpenEvent = openEvent,
@@ -164,13 +182,13 @@ fun LichApp(
                         onOpenPage = { date -> backStack.switchTo(TodayRoute(date.toString())) },
                     )
                 }
-                entry<EventsRoute> {
+                entry<EventsRoute>(metadata = topLevelMetadata) {
                     EventsScreen(hiltViewModel<EventsViewModel>(), onAddEvent = addEvent, onOpenEvent = openEvent)
                 }
-                entry<HolidaysRoute> {
+                entry<HolidaysRoute>(metadata = topLevelMetadata) {
                     HolidaysScreen(hiltViewModel<HolidaysViewModel>()) { ruleId, year -> backStack.add(HolidayDetailRoute(ruleId, year)) }
                 }
-                entry<SettingsRoute> { SettingsScreen(hiltViewModel<SettingsViewModel>()) }
+                entry<SettingsRoute>(metadata = topLevelMetadata) { SettingsScreen(hiltViewModel<SettingsViewModel>()) }
                 entry<EventEditorRoute> { route ->
                     val vm = hiltViewModel<EventEditorViewModel, EventEditorViewModel.Factory>(
                         creationCallback = { it.create(route.eventId, route.date?.let(LocalDate::parse)) },

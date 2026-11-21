@@ -7,7 +7,9 @@
     <string name="holidays_days_off">Lịch nghỉ chính thức</string>
     <string name="holidays_days_off_summary">%1$d đợt · %2$d ngày</string>
     <string name="holidays_days_off_statutory_summary">%1$d dịp luật định</string>
-    <string name="holidays_days_off_missing">Lịch nghỉ bù, hoán đổi năm %1$d chưa được công bố. Dưới đây là các dịp nghỉ lễ theo Bộ luật Lao động.</string>
+    <string name="holidays_days_off_missing">Chưa có lịch nghỉ bù, hoán đổi năm %1$d. Các mốc dưới đây là ngày lễ luật định.</string>
+    <string name="holidays_sources_title">Nguồn lịch nghỉ</string>
+    <string name="holidays_read_more">Đọc thêm về ngày lễ</string>
     <string name="holidays_break_status_past">Đã qua</string>
     <string name="holidays_break_status_ongoing">Đang nghỉ</string>
     <string name="holidays_break_status_upcoming">Sắp tới</string>
@@ -20,7 +22,7 @@
     <string name="holidays_lunar_date">%1$d/%2$d âm lịch</string>
     <string name="holidays_lunar_last_day">Ngày cuối tháng %1$s âm lịch</string>
     <string name="holidays_solar_rule">Ngày %1$d/%2$d dương lịch hằng năm</string>
-    <string name="holidays_lunar_rule">Ngày %1$d/%2$d âm lịch hằng năm, ngày dương lịch thay đổi theo từng năm</string>
+    <string name="holidays_lunar_rule">Ngày %1$d/%2$d âm lịch hằng năm</string>
     <string name="holidays_upcoming_years">Các năm tới</string>
     <string name="holidays_not_found">Không tìm thấy ngày lễ này.</string>
     <string name="holidays_days_count">%1$d ngày</string>

@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.app.calendar.core.designsystem.component.DailyImageView
 import com.app.calendar.core.designsystem.component.EmptyState
+import com.app.calendar.core.designsystem.component.ExpandableSection
 import com.app.calendar.core.designsystem.format.LichFormat
 import com.app.calendar.core.designsystem.theme.LichTextStyles
 import com.app.calendar.core.model.CalendarSystem
@@ -269,8 +270,10 @@ private fun HolidayBodySections(
             if (rule.description.isNotBlank()) {
                 Text(rule.description, style = MaterialTheme.typography.bodyLarge)
             }
-            state.content?.caption?.takeIf { it.isNotBlank() }?.let {
-                Text(it, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            state.content?.caption?.takeIf { it.isNotBlank() && it.trim() != rule.description.trim() }?.let { caption ->
+                ExpandableSection(title = stringResource(R.string.holidays_read_more)) {
+                    Text(caption, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
             }
         }
     }
@@ -289,11 +292,11 @@ private fun HolidayBodySections(
             }
             val sources = state.officialBreaks.map { it.source }.filter { it.isNotBlank() }.distinct()
             if (sources.isNotEmpty()) {
-                Text(
-                    stringResource(R.string.holidays_source, sources.joinToString("; ")),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
+                ExpandableSection(title = stringResource(R.string.holidays_sources_title)) {
+                    sources.forEach { source ->
+                        Text(source, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
+                }
             }
         }
     }

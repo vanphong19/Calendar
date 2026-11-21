@@ -16,14 +16,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -137,7 +138,7 @@ fun DayCellView(
     val numberSize = dayNumberSize(compactHeight)
     val ink = dayInkColor(cell.date, cell.isPublicHoliday)
     val numberColor = if (isToday) MaterialTheme.colorScheme.onPrimary else ink
-    val background by animateColorAsState(
+    val background = animateColorAsState(
         if (isSelected && !isToday) MaterialTheme.colorScheme.surfaceContainerHighest else Color.Transparent,
         label = "cellBackground",
     )
@@ -154,7 +155,8 @@ fun DayCellView(
         modifier
             .padding(CellPadding)
             .clip(RoundedCornerShape(14.dp))
-            .background(background)
+            // Read the animated value while drawing, without recomposing the cell's text each frame.
+            .drawBehind { drawRect(background.value) }
             .then(if (isSelected && isToday) Modifier.border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(14.dp)) else Modifier)
             .selectable(selected = isSelected, onClick = onClick, role = Role.Button)
             .clearAndSetSemantics {
@@ -176,10 +178,10 @@ fun DayCellView(
                     .background(if (isToday) MaterialTheme.colorScheme.primary else Color.Transparent),
                 contentAlignment = Alignment.Center,
             ) {
-                Text(
+                BasicText(
                     cell.date.dayOfMonth.toString(),
-                    style = if (compactHeight) LichTextStyles.GridDay.copy(fontSize = LichTextStyles.GridDay.fontSize * 0.8f) else LichTextStyles.GridDay,
-                    color = numberColor,
+                    style = (if (compactHeight) LichTextStyles.GridDay.copy(fontSize = LichTextStyles.GridDay.fontSize * 0.8f) else LichTextStyles.GridDay)
+                        .copy(color = numberColor),
                     maxLines = 1,
                     softWrap = false,
                 )
@@ -189,7 +191,7 @@ fun DayCellView(
                     cell.lunar.day == 1 || cell.lunar.day == 15 -> colors.bronze
                     else -> colors.inkMuted
                 }
-                Text(lunarLabel, style = LichTextStyles.GridLunar, color = lunarColor, maxLines = 1, softWrap = false)
+                BasicText(lunarLabel, style = LichTextStyles.GridLunar.copy(color = lunarColor), maxLines = 1, softWrap = false)
             }
             Spacer(Modifier.height(markerSpacing(compactHeight)))
             Row(

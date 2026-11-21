@@ -69,6 +69,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.app.calendar.core.designsystem.component.EmptyState
+import com.app.calendar.core.designsystem.component.ExpandableSection
 import com.app.calendar.core.designsystem.component.dayInkColor
 import com.app.calendar.core.designsystem.format.LichFormat
 import com.app.calendar.core.designsystem.theme.LichTextStyles
@@ -640,12 +641,14 @@ private fun OfficialBreaksSection(
 
         val sources = breaks.map { it.source }.filter { it.isNotBlank() }.distinct()
         if (sources.isNotEmpty()) {
-            Text(
-                stringResource(R.string.holidays_source, sources.joinToString("; ")),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            ExpandableSection(
+                title = stringResource(R.string.holidays_sources_title),
                 modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
-            )
+            ) {
+                sources.forEach { source ->
+                    Text(source, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
         }
     }
 }
@@ -734,6 +737,14 @@ internal fun OfficialBreakCard(
                             modifier = Modifier.padding(horizontal = 9.dp, vertical = 3.dp),
                         )
                     }
+                    if (onClick != null) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.size(18.dp),
+                        )
+                    }
                 }
 
                 Row(
@@ -765,7 +776,9 @@ internal fun OfficialBreakCard(
                     }
                 }
 
-                if (officialBreak.reason.isNotBlank()) {
+                // Announced cards lead with dates; the full explanation is on their detail screen.
+                // Keep statutory caveats visible when no announced schedule exists.
+                if ((onClick == null || !officialBreak.isAnnounced) && officialBreak.reason.isNotBlank()) {
                     Text(
                         officialBreak.reason,
                         style = MaterialTheme.typography.bodySmall,
@@ -789,11 +802,13 @@ internal fun OfficialBreakCard(
                                 style = MaterialTheme.typography.labelMedium.copy(fontFeatureSettings = "tnum"),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer,
                             )
-                            Text(
-                                makeUp.reason,
-                                style = MaterialTheme.typography.bodySmall,
-                                color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.85f),
-                            )
+                            if (onClick == null) {
+                                Text(
+                                    makeUp.reason,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onTertiaryContainer.copy(alpha = 0.85f),
+                                )
+                            }
                         }
                     }
                 }

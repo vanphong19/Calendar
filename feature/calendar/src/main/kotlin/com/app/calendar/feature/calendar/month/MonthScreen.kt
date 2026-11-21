@@ -121,7 +121,7 @@ fun MonthScreen(
     val config = LocalConfiguration.current
     val compactHeight = config.screenHeightDp < 480
     val twoPaneLandscape = config.screenWidthDp >= 600 && compactHeight
-    val coverHeight = if (config.screenHeightDp < 840) 108.dp else 144.dp
+    val coverHeight = if (config.screenHeightDp < 840) 128.dp else 168.dp
     val rowHeight = gridRowHeight(settings.showLunar, compactHeight = twoPaneLandscape)
     val isCurrentMonth = state.visibleMonth == YearMonth.from(today) && state.selectedDate == today
 

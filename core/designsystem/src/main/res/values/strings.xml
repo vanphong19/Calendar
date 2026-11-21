@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="section_expanded">Đã mở rộng</string>
+    <string name="section_collapsed">Đã thu gọn</string>
     <!-- Indexed by DayOfWeek.value - 1 (Monday first) -->
     <string-array name="weekday_full">
         <item>Thứ Hai</item>

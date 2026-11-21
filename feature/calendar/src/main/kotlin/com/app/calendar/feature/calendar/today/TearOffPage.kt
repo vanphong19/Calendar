@@ -21,16 +21,14 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -337,7 +335,7 @@ private fun LunarBox(details: DayDetails, compactWidth: Boolean = false) {
     )
 }
 
-/** Keeps a label on one crisp line by gently stepping font size down before ever resorting to ellipsis. */
+/** Fits the label during measurement, using ellipsis only when the minimum size cannot fit. */
 @Composable
 private fun AutoFitSingleLineText(
     text: String,
@@ -347,21 +345,17 @@ private fun AutoFitSingleLineText(
     modifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Start,
 ) {
-    val baseSp = style.fontSize.value
-    var sizeSp by remember(text, baseSp) { mutableFloatStateOf(baseSp) }
-    Text(
+    BasicText(
         text = text,
-        style = style.copy(fontSize = sizeSp.sp),
-        color = color,
-        textAlign = textAlign,
+        style = style.copy(color = color, textAlign = textAlign),
         maxLines = 1,
         softWrap = false,
         overflow = TextOverflow.Ellipsis,
-        onTextLayout = { result ->
-            if ((result.didOverflowWidth || result.hasVisualOverflow || result.isLineEllipsized(0)) && sizeSp > minFontSizeSp) {
-                sizeSp = (sizeSp - 0.5f).coerceAtLeast(minFontSizeSp)
-            }
-        },
+        autoSize = TextAutoSize.StepBased(
+            minFontSize = minFontSizeSp.sp,
+            maxFontSize = style.fontSize,
+            stepSize = 0.5.sp,
+        ),
         modifier = modifier,
     )
 }

@@ -69,6 +69,7 @@ import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.SingletonImageLoader
 import com.app.calendar.core.designsystem.format.LichFormat
+import com.app.calendar.core.designsystem.component.ExpandableSection
 import com.app.calendar.core.designsystem.theme.lich
 import com.app.calendar.core.model.HolidayCategory
 import com.app.calendar.core.model.ThemeMode
@@ -277,8 +278,9 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 SettingsCard {
                     Column(Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
                         Text(stringResource(R.string.settings_version, version), style = MaterialTheme.typography.titleSmall)
-                        Text(stringResource(R.string.settings_licenses), style = MaterialTheme.typography.titleSmall, modifier = Modifier.padding(top = 12.dp, bottom = 4.dp))
-                        Text(stringResource(R.string.settings_licenses_summary), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        ExpandableSection(title = stringResource(R.string.settings_licenses)) {
+                            Text(stringResource(R.string.settings_licenses_summary), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
                     }
                 }
             }
